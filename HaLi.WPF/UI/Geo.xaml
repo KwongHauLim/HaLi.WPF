@@ -1,0 +1,25 @@
+﻿<UserControl
+    x:Name="uc"
+    x:Class="HaLi.WPF.UI.Geo"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:HaLi.WPF.UI"
+    xmlns:hc="https://handyorg.github.io/handycontrol"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    Background="Transparent" Foreground="#FF212121"
+    MouseLeftButtonDown="OnMouseDown" MouseEnter="OnMouseEnter" MouseLeave="OnMouseLeave"
+    d:DesignHeight="100" d:DesignWidth="100"
+    mc:Ignorable="d">
+    <hc:SimplePanel x:Name="uiBack">
+        <Image Width="{Binding ActualWidth, ElementName=uc, Mode=OneWay}" Height="{Binding ActualHeight, ElementName=uc, Mode=OneWay}">
+            <Image.Source>
+                <DrawingImage>
+                    <DrawingImage.Drawing>
+                        <GeometryDrawing x:Name="uiDraw" Brush="#FF212121" />
+                    </DrawingImage.Drawing>
+                </DrawingImage>
+            </Image.Source>
+        </Image>
+    </hc:SimplePanel>
+</UserControl>
