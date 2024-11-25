@@ -1,0 +1,43 @@
+﻿<local:LabeledUI 
+    x:Name="uc"
+    x:Class="HaLi.WPF.UI.CheckBox"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="clr-namespace:HaLi.WPF.UI">
+    <local:LabeledUI.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/HaLi.WPF;component/Themes/WPF.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </local:LabeledUI.Resources>
+    <local:LabeledUI.Style>
+        <Style>
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding LabelPlace, ElementName=uc}" Value="{x:Static Dock.Left}">
+                    <Setter Property="local:LabeledUI.Margin" Value="6,0" />
+                    <Setter Property="local:LabeledUI.LabelMargin" Value="0,4,6,4" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding LabelPlace, ElementName=uc}" Value="{x:Static Dock.Right}">
+                    <Setter Property="local:LabeledUI.Margin" Value="6,0" />
+                    <Setter Property="local:LabeledUI.LabelMargin" Value="6,4,0,4" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding LabelPlace, ElementName=uc}" Value="{x:Static Dock.Top}">
+                    <Setter Property="local:LabeledUI.Margin" Value="6,4" />
+                    <Setter Property="local:LabeledUI.LabelMargin" Value="4,0,0,2" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding LabelPlace, ElementName=uc}" Value="{x:Static Dock.Bottom}">
+                    <Setter Property="local:LabeledUI.Margin" Value="6,4" />
+                    <Setter Property="local:LabeledUI.LabelMargin" Value="4,2,0,0" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Label, ElementName=uc}" Value="">
+                    <Setter Property="local:LabeledUI.Margin" Value="0" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Label, ElementName=uc}" Value="{x:Null}">
+                    <Setter Property="local:LabeledUI.Margin" Value="0" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+    </local:LabeledUI.Style>
+    <CheckBox x:Name="uiCheck" IsChecked="{Binding IsChecked, ElementName=uc}" />
+</local:LabeledUI>
