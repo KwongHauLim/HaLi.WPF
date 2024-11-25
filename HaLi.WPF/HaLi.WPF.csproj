@@ -5,8 +5,8 @@
     <Nullable>enable</Nullable>
     <UseWPF>true</UseWPF>
     <ImplicitUsings>enable</ImplicitUsings>
-    <AssemblyVersion>1.0.0.67</AssemblyVersion>
-    <FileVersion>1.0.0.67</FileVersion>
+    <AssemblyVersion>1.0.0.69</AssemblyVersion>
+    <FileVersion>1.0.0.69</FileVersion>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
