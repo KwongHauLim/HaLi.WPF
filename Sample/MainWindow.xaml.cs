@@ -23,7 +23,6 @@ namespace Sample
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
-            uiMover.Target = uiBlock;
         }
     }
 }

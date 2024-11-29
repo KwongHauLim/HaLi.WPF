@@ -8,10 +8,17 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800" ResizeMode="NoResize" Loaded="OnLoaded">
     <Grid>
-
-        <Canvas Margin="175,114,0,0">
-            <Rectangle x:Name="uiBlock" Fill="red" Width="80" Height="80" Canvas.Left="100" Canvas.Top="100"/>
-        </Canvas>
-        <hali:Joystick x:Name="uiMover" Width="50" Height="50" HorizontalAlignment="Left" VerticalAlignment="Top" Background="Gray" Target="{Binding ElementName=uiBlock, Mode=OneWay}"  Anywhere="True"/>
+        <hali:RegularPanel Columns="3" ColumnFill="1">
+            <Label Content="1"/>
+            <Label Content="1" Width="80"/>
+            <Label Content="1"/>
+            <Label Content="1"/>
+            <Label Content="1"/>
+            <Label Content="1"/>
+            <Label Content="1"/>
+            <Label Content="1"/>
+            <Label Content="1"/>
+            <Label Content="1"/>
+        </hali:RegularPanel>
     </Grid>
 </Window>
