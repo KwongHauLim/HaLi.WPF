@@ -8,17 +8,17 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800" ResizeMode="NoResize" Loaded="OnLoaded">
     <Grid>
-        <hali:RegularPanel Columns="3" ColumnFill="1">
-            <Label Content="1"/>
-            <Label Content="1" Width="80"/>
-            <Label Content="1"/>
-            <Label Content="1"/>
-            <Label Content="1"/>
-            <Label Content="1"/>
-            <Label Content="1"/>
-            <Label Content="1"/>
-            <Label Content="1"/>
-            <Label Content="1"/>
+        <hali:RegularPanel Columns="3" ColumsWidth="100,*,2*">
+            <Label Content="12345"/>
+            <Label Content="12345"/>
+            <Label Content="12345"/>
+            <Label Content="12345"/>
+            <Label Content="12345"/>
+            <Label Content="12345"/>
+            <Label Content="12345"/>
+            <Label Content="12345"/>
+            <Label Content="12345"/>
+            <Label Content="12345"/>
         </hali:RegularPanel>
     </Grid>
 </Window>

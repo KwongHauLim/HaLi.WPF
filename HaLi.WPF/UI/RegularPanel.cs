@@ -1,9 +1,11 @@
-﻿using System.Windows;
+﻿using HaLi.WPF.Helpers;
+using System.ComponentModel;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace HaLi.WPF.UI;
 
-public class RegularPanel : Panel
+public class RegularPanel : Panel, INotifyPropertyChanged
 {
     public int Columns
     {
@@ -13,22 +15,40 @@ public class RegularPanel : Panel
 
     // Using a DependencyProperty as the backing store for Columns.  This enables animation, styling, binding, etc...
     public static readonly DependencyProperty ColumnsProperty =
-        DependencyProperty.Register("Columns", typeof(int), typeof(RegularPanel), new PropertyMetadata(2));
+        DependencyProperty.Register("Columns", typeof(int), typeof(RegularPanel), new PropertyMetadata(2, OnPropertyChanged));
 
 
-    public int ColumnFill
+    public string ColumsWidth
     {
-        get { return (int)GetValue(ColumnFillProperty); }
-        set { SetValue(ColumnFillProperty, value); }
+        get { return (string)GetValue(ColumsWidthProperty); }
+        set { SetValue(ColumsWidthProperty, value); }
     }
 
-    // Using a DependencyProperty as the backing store for ColumnFill.  This enables animation, styling, binding, etc...
-    public static readonly DependencyProperty ColumnFillProperty =
-        DependencyProperty.Register("ColumnFill", typeof(int), typeof(RegularPanel), new PropertyMetadata(-1));
+    // Using a DependencyProperty as the backing store for ColumsWidth.  This enables animation, styling, binding, etc...
+    public static readonly DependencyProperty ColumsWidthProperty =
+        DependencyProperty.RegisterAttached("ColumsWidth", typeof(string), typeof(RegularPanel), new FrameworkPropertyMetadata("", FrameworkPropertyMetadataOptions.AffectsRender, OnPropertyChanged), new ValidateValueCallback(IsValidWidth));
+
+    private static bool IsValidWidth(object value)
+    {
+        return value != null;
+    }
+
+    //DependencyProperty.Register("ColumsWidth", typeof(string), typeof(RegularPanel), new PropertyMetadata("", OnPropertyChanged));
+
+    private static void OnPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    {
+        if (d is RegularPanel panel)
+        {
+            panel.InvalidateVisual();
+            panel.PropertyChanged?.Invoke(panel, new PropertyChangedEventArgs(e.Property.Name));
+        }
+    }
 
     private double[] widths;
     private double[] height;
     private int fillIndex;
+
+    public event PropertyChangedEventHandler? PropertyChanged;
 
     public int Rows { get; private set; }
 
@@ -38,60 +58,107 @@ public class RegularPanel : Panel
         if (Children.Count % Columns > 0)
             Rows++;
 
-        var sizeMeasure = new Size[Columns, Rows];
+        var gridChildren = new UIElement[Columns, Rows];
+        var gridSizes = new Size[Columns, Rows];
         widths = new double[Columns];
         height = new double[Rows];
 
-        fillIndex = (ColumnFill >= 0 && ColumnFill < Columns) ? ColumnFill : Columns - 1;
+        if (string.IsNullOrEmpty(ColumsWidth))
+        {
+            ColumsWidth = string.Join(',', Enumerable.Repeat("*", Columns));
+        }
+
+        var defines = GridHelper.ConvertToGridLengths(ColumsWidth);
+        if (defines.Length < Columns)
+            Array.Resize(ref defines, Columns);
+        for (int i = 0; i < defines.Length; i++)
+        {
+            if (defines[i] == null)
+                defines[i] = new GridLength(1, GridUnitType.Auto);
+        }
 
         for (int i = 0; i < Children.Count; i++)
         {
             var col = i % Columns;
             var row = i / Columns;
-            if (col != fillIndex)
-            {
-                var child = Children[i];
-                child.Measure(availableSize);
-                sizeMeasure[col, row] = child.DesiredSize; 
-            }
+            gridChildren[col, row] = Children[i];
         }
 
-        for (int i = 0; i < Columns; i++)
+        var remainWidth = availableSize.Width;
+        var remainHeight = availableSize.Height;
+
+        // First measure absolute columns
+        for (int c = 0; c < Columns; c++)
         {
-            for (int j = 0; j < Rows; j++)
+            var length = defines[c];
+            if (length.IsAbsolute)
             {
-                if (sizeMeasure[i, j] != null)
+                var size = new Size(length.Value, remainHeight);
+                for (int r = 0; r < Rows; r++)
                 {
-                    widths[i] = Math.Max(widths[i], sizeMeasure[i, j].Width);
-                    height[j] = Math.Max(height[j], sizeMeasure[i, j].Height);
+                    MeasureChild(c, r, size, true);
                 }
+                remainWidth -= length.Value;
             }
         }
 
-        if (fillIndex >= 0 && fillIndex < widths.Length)
+        // Second measure Auto columns
+        for (int c = 0; c < Columns; c++)
         {
-            widths[fillIndex] = 0;
-            widths[fillIndex] = availableSize.Width - widths.Sum();
-
-            for (int j = 0; j < Rows; j++)
+            var length = defines[c];
+            if (length.IsAuto)
             {
-                var size = new Size(widths[fillIndex], height[j]);
-                sizeMeasure[fillIndex, j] = size;
-
-                if (size != null)
+                var size = new Size(remainWidth, remainHeight);
+                for (int r = 0; r < Rows; r++)
                 {
-                    int idx = j * Columns + fillIndex;
-                    if (idx >= 0 && idx < Children.Count)
-                    {
-                        var child = Children[idx];
-                        child.Measure(size);
-                    }
+                    MeasureChild(c, r, size, false);
+                }
+                remainWidth -= widths[c];
+            }
+        }
 
+        // First count how many stars
+        var starCount = 0d;
+        for (int c = 0; c < Columns; c++)
+        {
+            var length = defines[c];
+            if (length.IsStar)
+            {
+                starCount += length.Value;
+            }
+        }
+        var starWidth = remainWidth / starCount;
+        // Then finally measure Stars columns
+        for (int c = 0; c < Columns; c++)
+        {
+            var length = defines[c];
+            if (length.IsStar)
+            {
+                var size = new Size(starWidth * length.Value, remainHeight);
+                for (int r = 0; r < Rows; r++)
+                {
+                    MeasureChild(c, r, size, true);
                 }
             }
         }
 
         return new Size(widths.Sum(), height.Sum());
+
+        void MeasureChild(int c, int r, Size size, bool fixedWidth = false)
+        {
+            var child = gridChildren[c, r];
+            if (child != null)
+            {
+                child.Measure(size);
+                gridSizes[c, r] = child.DesiredSize;
+
+                if (fixedWidth)
+                    widths[c] = Math.Max(widths[c], size.Width);
+                else
+                    widths[c] = Math.Max(widths[c], gridSizes[c, r].Width);
+                height[r] = Math.Max(height[r], gridSizes[c, r].Height); 
+            }
+        }
     }
 
     protected override Size ArrangeOverride(Size finalSize)
