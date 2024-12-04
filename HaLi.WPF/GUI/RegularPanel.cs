@@ -3,7 +3,7 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
 
-namespace HaLi.WPF.UI;
+namespace HaLi.WPF.GUI;
 
 public class RegularPanel : Panel, INotifyPropertyChanged
 {

@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace HaLi.WPF.UI
+namespace HaLi.WPF.GUI
 {
     /// <summary>
     /// Interaction logic for CheckBox.xaml

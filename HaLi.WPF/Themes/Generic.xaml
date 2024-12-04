@@ -1,7 +1,7 @@
 <ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="clr-namespace:HaLi.WPF.UI"
+    xmlns:local="clr-namespace:HaLi.WPF.GUI"
     xmlns:s="clr-namespace:System;assembly=mscorlib"
     xmlns:hc="https://handyorg.github.io/handycontrol">    
     <s:Double x:Key="Double NaN">NaN</s:Double>

@@ -1,9 +1,9 @@
 ﻿<local:LabeledUI 
     x:Name="uc"
-    x:Class="HaLi.WPF.UI.CheckBox"
+    x:Class="HaLi.WPF.GUI.CheckBox"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="clr-namespace:HaLi.WPF.UI">
+    xmlns:local="clr-namespace:HaLi.WPF.GUI">
     <local:LabeledUI.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

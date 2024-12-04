@@ -6,7 +6,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 
-namespace HaLi.WPF.UI
+namespace HaLi.WPF.GUI
 {
     /// <summary>
     /// Interaction logic for FileBox.xaml

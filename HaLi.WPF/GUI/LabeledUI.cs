@@ -2,10 +2,10 @@
 using System.Windows.Controls;
 using System.Windows.Media;
 
-namespace HaLi.WPF.UI
+namespace HaLi.WPF.GUI
 {
     /// <summary>
-    /// Basic UI with a label
+    /// Basic GUI with a label
     /// </summary>
     public class LabeledUI : ContentControl
     {
