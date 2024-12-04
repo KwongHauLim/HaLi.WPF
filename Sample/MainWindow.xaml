@@ -4,21 +4,13 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Sample"
-        xmlns:hali="clr-namespace:HaLi.WPF.UI;assembly=HaLi.WPF"
+        xmlns:hali="clr-namespace:HaLi.WPF.GUI;assembly=HaLi.WPF"
+        xmlns:board="clr-namespace:HaLi.WPF.Board;assembly=HaLi.WPF"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800" ResizeMode="NoResize" Loaded="OnLoaded">
     <Grid>
-        <hali:RegularPanel Columns="3" ColumsWidth="100,*,2*">
-            <Label Content="12345"/>
-            <Label Content="12345"/>
-            <Label Content="12345"/>
-            <Label Content="12345"/>
-            <Label Content="12345"/>
-            <Label Content="12345"/>
-            <Label Content="12345"/>
-            <Label Content="12345"/>
-            <Label Content="12345"/>
-            <Label Content="12345"/>
-        </hali:RegularPanel>
+        <board:WhiteBoard>
+            <board:Line x:Name="uiLine2" X1="0" X2="100" Y1="50" Y2="100"/>
+        </board:WhiteBoard>
     </Grid>
 </Window>
