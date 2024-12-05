@@ -31,3 +31,20 @@ public class Rectangle : Shape
     public string Stroke { get; set; }
     public string Fill { get; set; }
 }
+
+public class Hand : Shape
+{
+    public Color Color { get; set; } = Colors.Black;
+    public double CursorSize { get; set; }
+    public double BrushSize { get; set; }
+
+
+    public class StrokeData
+    {
+        public byte[] StylusPoints { get; set; }
+        public Color Color { get; set; } = Colors.Black;
+        public double BrushSize { get; set; }
+    }
+
+    public List<StrokeData> Datas { get; set; }
+}

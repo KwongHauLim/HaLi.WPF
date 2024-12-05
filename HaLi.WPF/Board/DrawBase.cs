@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using HaLi.WPF.Helpers;
+using System.ComponentModel;
 using System.Reflection;
 using System.Text.Json;
 using System.Windows;
@@ -6,6 +7,7 @@ using System.Windows.Controls;
 
 namespace HaLi.WPF.Board
 {
+    [EditorBrowsable(EditorBrowsableState.Never)]
     public class DrawBase<T> : UserControl, INotifyPropertyChanged
         where T : Shapes.Shape, new()
     {
@@ -16,10 +18,16 @@ namespace HaLi.WPF.Board
         protected bool _flagBatch;
         protected bool _flagChanged;
 
+        protected virtual bool IsWholeCanvas => true;
 
         protected override void OnInitialized(EventArgs e)
         {
-            Shape ??= new T();
+            if (Shape == null)
+            {
+                Shape = new T();
+                OnNewShape(Shape);
+            }
+
             _flagBatch = true;
 
             base.OnInitialized(e);
@@ -33,7 +41,23 @@ namespace HaLi.WPF.Board
             Loaded += OnLoaded;
         }
 
-        public virtual void Reload(JsonDocument json)
+        protected virtual void OnNewShape(T shape)
+        {
+        }
+
+        public virtual void Export(string path)
+        {
+            var json = JsonSerializer.Serialize(Shape);
+            System.IO.File.WriteAllText(path, json);
+        }
+
+        public void Import(string path)
+        {
+            var json = System.IO.File.ReadAllText(path);
+            Import(JsonDocument.Parse(json));
+        }
+
+        public virtual void Import(JsonDocument json)
         {
             Shape = json.Deserialize<T>() ?? Shape;
 
@@ -57,15 +81,16 @@ namespace HaLi.WPF.Board
             UpdateGUI();
         }
 
-        public virtual void Save(string path)
-        {
-            var json = JsonSerializer.Serialize(Shape);
-            System.IO.File.WriteAllText(path, json);
-        }
-
         protected virtual void OnLoaded(object sender, RoutedEventArgs e)
         {
             _flagBatch = false;
+
+            if (IsWholeCanvas)
+            {
+                SetBinding(WidthProperty, GuiHelper.OneWay(Parent, "ActualWidth"));
+                SetBinding(HeightProperty, GuiHelper.OneWay(Parent, "ActualHeight")); 
+            }
+
             UpdateGUI();
         }
 
@@ -83,10 +108,11 @@ namespace HaLi.WPF.Board
         {
             base.OnPropertyChanged(e);
 
-            if (IsInitialized)
+            //if (IsInitialized)
             {
                 var name = e.Property.Name;
-                PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+                if (IsInitialized)
+                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
 
                 if (!_flagBatch)
                 {

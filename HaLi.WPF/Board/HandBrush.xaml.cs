@@ -1,5 +1,7 @@
 ﻿using HaLi.WPF.Helpers;
 using System.ComponentModel;
+using System.IO;
+using System.Text.Json;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Ink;
@@ -7,6 +9,7 @@ using System.Windows.Input;
 using System.Windows.Input.StylusPlugIns;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using static HaLi.WPF.Board.Shapes.Hand;
 
 namespace HaLi.WPF.Board;
 
@@ -15,9 +18,10 @@ namespace HaLi.WPF.Board;
 /// <summary>
 /// Interaction logic for HandBrush.xaml
 /// </summary>
+[EditorBrowsable(EditorBrowsableState.Never)]
 public partial class HandBrush : InkCanvas
 {
-    private CustomDraw Drawer;
+    internal CustomDraw Drawer { get; set; }
 
     public HandBrush()
     {
@@ -28,8 +32,8 @@ public partial class HandBrush : InkCanvas
             Texture = new Uri("pack://application:,,,/HaLi.WPF;component/Resources/Images/chalk.png"),
             TextureSize = 64,
             Color = Colors.Black,
-            Width = 2,
-            BrushSize = 16
+            CursorSize = 8,
+            BrushSize = 8
         };
         DynamicRenderer = new CustomRenderer
         {
@@ -44,7 +48,8 @@ public partial class HandBrush : InkCanvas
 
             Background = Brushes.Transparent;
             DefaultDrawingAttributes.Color = Drawer.Color;
-            DefaultDrawingAttributes.Width = Drawer.Width;
+            DefaultDrawingAttributes.Width = Drawer.CursorSize;
+            DefaultDrawingAttributes.Height = Drawer.CursorSize;
         };
     }
 
@@ -52,23 +57,139 @@ public partial class HandBrush : InkCanvas
     {
         //感兴趣的童鞋，注释这一句看看？
         this.Strokes.Remove(e.Stroke);
-
         this.Strokes.Add(new CustomStroke(Drawer, e.Stroke.StylusPoints));
     }
 
-    class CustomDraw
+    public void UpdateGUI()
+    {
+        if (Drawer != null)
+        {
+            DefaultDrawingAttributes.Color = Drawer.Color;
+            DefaultDrawingAttributes.Width = Drawer.CursorSize;
+            DefaultDrawingAttributes.Height = Drawer.CursorSize;
+        }
+    }
+
+    public void ModifyStrokes()
+    {
+        DrawingAttributes newAttributes = DefaultDrawingAttributes.Clone();
+        newAttributes.Color = Drawer.Color; // 設置為您需要的顏色
+        newAttributes.Width = Drawer.CursorSize; // 設置為您需要的寬度
+        newAttributes.Height = Drawer.CursorSize; // 設置為您需要的高度
+
+        // 遍歷所有筆跡並更改它們的顏色
+        foreach (var stroke in Strokes)
+        {
+            stroke.DrawingAttributes = newAttributes;
+        }
+    }
+
+    public void Modify(Stroke stroke, Color color, double size)
+    {
+        DrawingAttributes newAttributes = DefaultDrawingAttributes.Clone();
+        newAttributes.Color = color; // 設置為您需要的顏色
+        newAttributes.Width = size; // 設置為您需要的寬度
+        newAttributes.Height = size; // 設置為您需要的高度
+        stroke.DrawingAttributes = newAttributes;
+    }
+
+    public void Clear()
+    {
+        Strokes.Clear();
+    }
+
+    internal List<StrokeData> Export()
+    {
+        var list = new List<StrokeData>();
+
+        foreach (var stroke in Strokes)
+        {
+            var stylusPoints = stroke.StylusPoints.SelectMany(sp => new double[] { sp.X, sp.Y, sp.PressureFactor }).ToArray();
+            var stylusPointsBytes = new byte[stylusPoints.Length * sizeof(double)];
+            System.Buffer.BlockCopy(stylusPoints, 0, stylusPointsBytes, 0, stylusPointsBytes.Length);
+
+            list.Add(new StrokeData
+            {
+                StylusPoints = stylusPointsBytes,
+                Color = stroke.DrawingAttributes.Color,
+                BrushSize = Math.Max(stroke.DrawingAttributes.Height, stroke.DrawingAttributes.Width)
+            });
+        }
+
+        return list;
+    }
+
+    internal void Import(List<StrokeData> list)
+    {
+        Clear();
+        foreach (var strokeData in list)
+        {
+            var stylusPoints = new double[strokeData.StylusPoints.Length / sizeof(double)];
+            System.Buffer.BlockCopy(strokeData.StylusPoints, 0, stylusPoints, 0, strokeData.StylusPoints.Length);
+
+            var points = new StylusPointCollection();
+            for (int i = 0; i < stylusPoints.Length; i += 3)
+            {
+                points.Add(new StylusPoint(stylusPoints[i], stylusPoints[i + 1], (float)stylusPoints[i + 2]));
+            }
+
+            var drawingAttributes = new DrawingAttributes
+            {
+                Color = strokeData.Color,
+                Width = strokeData.BrushSize,
+                Height = strokeData.BrushSize
+            };
+
+            var drawer = new CustomDraw
+            {
+                Texture = Drawer.Texture,
+                TextureSize = Drawer.TextureSize,
+                Color = drawingAttributes.Color,
+                CursorSize = drawingAttributes.Width,
+                BrushSize = drawingAttributes.Height
+            };
+            var stroke = new CustomStroke(drawer, points, drawingAttributes);
+            Strokes.Add(stroke);
+        }
+    }
+
+    internal class CustomDraw
     {
         public ImageSource Image { get; set; }
         public Uri Texture { get; set; }
         public int TextureSize { get; set; }
         public Color Color { get; set; }
-        public int Width { get; set; }
+        public double CursorSize { get; set; }
         public double BrushSize { get; set; }
+
+        private void DrawImage()
+        {
+            var dv = new DrawingVisual();
+            var size = TextureSize;
+            using (var conext = dv.RenderOpen())
+            {
+                //[关键]OpacityMask了解下？也许有童鞋想到的办法是，各种颜色的图片来一张？
+                conext.PushOpacityMask(new ImageBrush(new BitmapImage(Texture)));
+                //用颜色生成画笔画一个矩形
+                conext.DrawRectangle(new SolidColorBrush(Color), null, new Rect(0, 0, size, size));
+                conext.Close();
+            }
+            var rtb = new RenderTargetBitmap(size, size, 96d, 96d, PixelFormats.Pbgra32);
+            rtb.Render(dv);
+            var imageSource = BitmapFrame.Create(rtb);
+            //[重要]此乃解决卡顿问题的关键！
+            imageSource.Freeze();
+
+            Image = imageSource;
+        }
 
         public void Draw(DrawingContext drawingContext, StylusPointCollection stylusPoints)
         {
             if (stylusPoints.Count <= 1)
                 return;
+
+            if (Image == null)
+                DrawImage();
 
             var p1 = new Point(double.NegativeInfinity, double.NegativeInfinity);
             var p2 = new Point(0, 0);
@@ -119,32 +240,6 @@ public partial class HandBrush : InkCanvas
     {
         public CustomDraw Drawer { get; set; }
 
-        protected override void OnDrawingAttributesReplaced()
-        {
-            if (DesignerProperties.GetIsInDesignMode(this.Element))
-                return;
-
-            base.OnDrawingAttributesReplaced();
-
-            var dv = new DrawingVisual();
-            var size = Drawer.TextureSize;
-            using (var conext = dv.RenderOpen())
-            {
-                //[关键]OpacityMask了解下？也许有童鞋想到的办法是，各种颜色的图片来一张？
-                conext.PushOpacityMask(new ImageBrush(new BitmapImage(Drawer.Texture)));
-                //用颜色生成画笔画一个矩形
-                conext.DrawRectangle(new SolidColorBrush(this.DrawingAttributes.Color), null, new Rect(0, 0, size, size));
-                conext.Close();
-            }
-            var rtb = new RenderTargetBitmap(size, size, 96d, 96d, PixelFormats.Pbgra32);
-            rtb.Render(dv);
-            var imageSource = BitmapFrame.Create(rtb);
-            //[重要]此乃解决卡顿问题的关键！
-            imageSource.Freeze();
-
-            Drawer.Image = imageSource;
-        }
-
         protected override void OnDraw(DrawingContext drawingContext, StylusPointCollection stylusPoints, Geometry geometry, Brush fillBrush)
         {
             Drawer.Draw(drawingContext, stylusPoints);
@@ -159,7 +254,14 @@ public partial class HandBrush : InkCanvas
         {
             Drawer = draw;
             DrawingAttributes.Color = Drawer.Color;
-            DrawingAttributes.Width = Drawer.Width;
+            DrawingAttributes.Width = Drawer.CursorSize;
+        }
+
+        public CustomStroke(CustomDraw draw, StylusPointCollection stylusPoints, DrawingAttributes drawingAttributes) : base(stylusPoints, drawingAttributes)
+        {
+            Drawer = draw;
+            DrawingAttributes.Color = Drawer.Color;
+            DrawingAttributes.Width = Drawer.CursorSize;
         }
 
         //卡顿就是该函数造成，每写完一笔就会调用，当笔画过长，后果可想而知~

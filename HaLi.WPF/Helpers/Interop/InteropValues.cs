@@ -242,7 +242,7 @@ internal class InteropValues
     //    }
 
     //    public Point Position => new(Left, Top);
-    //    public Size Size => new(Width, Height);
+    //    public Size Size => new(CursorSize, Height);
 
     //    public int Height
     //    {
@@ -250,7 +250,7 @@ internal class InteropValues
     //        set => Bottom = Top + value;
     //    }
 
-    //    public int Width
+    //    public int CursorSize
     //    {
     //        get => Right - Left;
     //        set => Right = Left + value;
@@ -537,7 +537,7 @@ internal class InteropValues
 
     //    ThinHorizontalBorderHeight,
     //    ThinVerticalBorderWidth,
-    //    CursorWidth,
+    //    CursorSize,
     //    CursorHeight,
     //    ThickHorizontalBorderHeight,
     //    ThickVerticalBorderWidth,
@@ -1115,7 +1115,7 @@ internal class InteropValues
     //    public IntPtr HwndZOrderInsertAfter;
     //    public int X;
     //    public int Y;
-    //    public int Width;
+    //    public int CursorSize;
     //    public int Height;
     //    public WindowPositionFlags Flags;
     //}

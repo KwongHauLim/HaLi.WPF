@@ -1,4 +1,6 @@
-﻿using System.Text;
+﻿using System.IO;
+using System.Text;
+using System.Text.Json;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -23,6 +25,22 @@ namespace Sample
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
+            PreviewKeyDown += (_, e) =>
+            {
+                if(e.Key == Key.C)
+                {
+                    ui.Clear();
+                }
+                else
+                if (e.Key == Key.E)
+                {
+                    ui.Export(@"C:\Antelope\Output\hand.json");
+                }
+                else if (e.Key == Key.I)
+                {
+                    ui.Import(@"C:\Antelope\Output\hand.json");
+                }
+            };
         }
     }
 }
