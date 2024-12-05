@@ -7,34 +7,6 @@ namespace HaLi.WPF.Board
 {
     public class LineBase : DrawBase<Shapes.Line>
     {
-        //public double X1
-        //{
-        //    get => Shape.X1;
-        //    set { Shape.X1 = value; OnPropertyChanged(nameof(X1)); }
-        //}
-
-        //public double Y1
-        //{
-        //    get => Shape.Y1;
-        //    set { Shape.Y1 = value; OnPropertyChanged(nameof(Y1)); }
-        //}
-
-        //public double X2
-        //{
-        //    get => Shape.X2;
-        //    set { Shape.X2 = value; OnPropertyChanged(nameof(X2)); }
-        //}
-
-        //public double Y2
-        //{
-        //    get => Shape.Y2;
-        //    set { Shape.Y2 = value; OnPropertyChanged(nameof(Y2)); }
-        //}
-
-        //public static readonly DependencyProperty X1Property = DependencyProperty.Register(
-        //               "X1", typeof(double), typeof(LineBase), new PropertyMetadata(0d, OnPropertyChanged));
-
-
         public double X1
         {
             get { return (double)GetValue(X1Property); }
