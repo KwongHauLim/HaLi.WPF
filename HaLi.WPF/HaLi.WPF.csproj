@@ -38,8 +38,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Resources\Images\chalk.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="HandyControl" Version="3.5.1" />
     <PackageReference Include="Microsoft-WindowsAPICodePack-Shell" Version="1.1.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="Resources\Images\chalk.png" />
   </ItemGroup>
 
 </Project>
