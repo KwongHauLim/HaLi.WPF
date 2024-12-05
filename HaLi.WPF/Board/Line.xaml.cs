@@ -1,4 +1,5 @@
 ﻿using HaLi.WPF.Helpers;
+using System.Text.Json;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -95,6 +96,13 @@ namespace HaLi.WPF.Board
             SetBinding(HeightProperty, GuiHelper.OneWay(Parent, "ActualHeight"));
         }
 
+        public override void Reload(JsonDocument json)
+        {
+            Brush = null;
+
+            base.Reload(json);
+        }
+
         protected override void UpdateGUI()
         {
             if (!IsInitialized || System.ComponentModel.DesignerProperties.GetIsInDesignMode(this))
@@ -187,6 +195,11 @@ namespace HaLi.WPF.Board
             uiPoly.Points.Add(pointC);
             uiPoly.Points.Add(pointD);
 
+            if (Brush == null)
+            {
+                // When reload, i clean the brush, so i need to reassign to new color
+                Brush = new SolidColorBrush(Shape.Color);
+            }
             uiPoly.Fill = Brush;
 
             base.UpdateGUI();
