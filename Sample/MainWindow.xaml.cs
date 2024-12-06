@@ -1,4 +1,5 @@
-﻿using System.IO;
+﻿using HaLi.WPF.Board;
+using System.IO;
 using System.Text;
 using System.Text.Json;
 using System.Windows;
@@ -46,6 +47,12 @@ namespace Sample
         private void WhiteBoard_MouseDown(object sender, MouseButtonEventArgs e)
         {
 
+        }
+
+        private void OnClick_Line(object sender, EventArgs e)
+        {
+            //uiBoard.Editor = new HaLi.WPF.Board.LineEdit();
+            uiBoard.StartEdit<LineEdit>();
         }
     }
 }

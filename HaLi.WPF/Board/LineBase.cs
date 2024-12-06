@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using HaLi.WPF.Helpers;
+using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
 
@@ -78,4 +79,43 @@ public class LineBase : DrawBase<Shapes.Line>
 
 public class LineEdit : EditBase
 {
+    private Line? editing;
+
+    public LineEdit()
+    {
+        var m = new EditMouse.EditMonitor();
+        m.WhenPressed = true;
+        m.WhenMove = true;
+        m.WhenRelease = true;
+        m.On += When;
+        Mouse.Monitors.Add(m);
+    }
+
+    private void When(object? sender, EditMouse.MouseArgs e)
+    {
+        switch (e.Event)
+        {
+            case EditMouse.MouseEvent.Down:
+                editing = new Line();
+                editing.Shape.X1 = Mouse.StartPosition.X;
+                editing.Shape.Y1 = Mouse.StartPosition.Y;
+                Helper.CopyProperties(editing.Shape, editing);
+                Board.uiCanvas.Children.Add(editing);
+                break;
+            case EditMouse.MouseEvent.Enter:
+                break;
+            case EditMouse.MouseEvent.Leave:
+                break;
+            case EditMouse.MouseEvent.Move:
+                if (editing != null)
+                {
+                    editing.X2 = Mouse.Position.X;
+                    editing.Y2 = Mouse.Position.Y;
+                }
+                break;
+            case EditMouse.MouseEvent.Up:
+                editing = null;
+                break;
+        }
+    }
 }

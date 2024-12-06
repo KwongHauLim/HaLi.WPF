@@ -58,13 +58,13 @@ namespace HaLi.WPF.Board
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
-            Editor = new LineEdit();
-            var mon = new EditBase.EditMouse.EditMonitor { WhenRelease = true };
-            mon.On += (s, e) =>
-            {
+        }
 
-            };
-            Editor.Mouse.Monitors.Add(mon);
+        public void StartEdit<T>()
+            where T : EditBase, new()
+        {
+            Editor = new T();
+            Editor.Board = this;
         }
 
         private void OnMouseEnter(object sender, MouseEventArgs e)

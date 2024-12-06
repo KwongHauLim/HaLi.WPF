@@ -134,6 +134,8 @@ public abstract class DrawBase<T> : UserControl, INotifyPropertyChanged
 
 public abstract class EditBase
 {
+    public BoardCanvas Board { get; internal set; }
+
     public class EditMouse
     {
         public Point Position { get; private set; }
@@ -149,34 +151,53 @@ public abstract class EditBase
             StartPosition = Position;
             LastPosition = Position;
             IsDown = true;
-            Monitors.Where(m => m.WhenPressed).Do(m => m.InvokeEvent(this));
+            var args = new MouseArgs { Event = MouseEvent.Down };
+            Monitors.Where(m => m.WhenPressed).Do(m => m.InvokeEvent(this, args));
         }
 
         internal virtual void OnMouseEnter(object sender, MouseEventArgs e)
         {
             Position = e.GetPosition((IInputElement)sender);
             InArea = true;
-            Monitors.Where(m => m.WhenEnter).Do(m => m.InvokeEvent(this));
+            var args = new MouseArgs { Event = MouseEvent.Enter };
+            Monitors.Where(m => m.WhenEnter).Do(m => m.InvokeEvent(this, args));
         }
 
         internal virtual void OnMouseLeave(object sender, MouseEventArgs e)
         {
             Position = e.GetPosition((IInputElement)sender);
             InArea = false;
-            Monitors.Where(m => m.WhenLeave).Do(m => m.InvokeEvent(this));
+            var args = new MouseArgs { Event = MouseEvent.Leave };
+            Monitors.Where(m => m.WhenLeave).Do(m => m.InvokeEvent(this, args));
         }
 
         internal virtual void OnMouseMove(object sender, MouseEventArgs e)
         {
             LastPosition = Position;
             Position = e.GetPosition((IInputElement)sender);
-            Monitors.Where(m => m.WhenMove).Do(m => m.InvokeEvent(this));
+            var args = new MouseArgs { Event = MouseEvent.Move };
+            Monitors.Where(m => m.WhenMove).Do(m => m.InvokeEvent(this, args));
         }
 
         internal virtual void OnMouseUp(object sender, MouseButtonEventArgs e)
         {
             IsDown = false;
-            Monitors.Where(m => m.WhenRelease).Do(m => m.InvokeEvent(this));
+            var args = new MouseArgs { Event = MouseEvent.Up };
+            Monitors.Where(m => m.WhenRelease).Do(m => m.InvokeEvent(this, args));
+        }
+
+        public enum MouseEvent
+        {
+            Down,
+            Enter,
+            Leave,
+            Move,
+            Up
+        }
+
+        public class MouseArgs : EventArgs
+        {
+            public MouseEvent Event { get; set; }
         }
 
         public class EditMonitor
@@ -187,10 +208,10 @@ public abstract class EditBase
             public bool WhenRelease { get; set; }
             public bool WhenMove { get; set; }
 
-            public event EventHandler? On;
-            internal void InvokeEvent(EditMouse edit)
+            public event EventHandler<MouseArgs>? On;
+            internal void InvokeEvent(EditMouse edit, MouseArgs args)
             {
-                On?.Invoke(edit, EventArgs.Empty);
+                On?.Invoke(edit, args);
             }
         }
         public List<EditMonitor> Monitors { get; set; } = new();
