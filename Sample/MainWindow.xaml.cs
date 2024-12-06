@@ -27,20 +27,25 @@ namespace Sample
         {
             PreviewKeyDown += (_, e) =>
             {
-                if(e.Key == Key.C)
-                {
-                    ui.Clear();
-                }
-                else
-                if (e.Key == Key.E)
-                {
-                    ui.Export(@"C:\Antelope\Output\hand.json");
-                }
-                else if (e.Key == Key.I)
-                {
-                    ui.Import(@"C:\Antelope\Output\hand.json");
-                }
+                //if(e.Key == Key.C)
+                //{
+                //    ui.Clear();
+                //}
+                //else
+                //if (e.Key == Key.E)
+                //{
+                //    ui.Export(@"C:\Antelope\Output\hand.json");
+                //}
+                //else if (e.Key == Key.I)
+                //{
+                //    ui.Import(@"C:\Antelope\Output\hand.json");
+                //}
             };
+        }
+
+        private void WhiteBoard_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+
         }
     }
 }

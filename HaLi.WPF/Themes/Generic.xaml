@@ -47,17 +47,4 @@
             </Setter.Value>
         </Setter>
     </Style>
-
-    <Style TargetType="board:WhiteBoard">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="board:WhiteBoard">
-                    <Canvas>
-                        <!--<ContentControl Content="{TemplateBinding Content}"/>-->
-                        <ItemsPresenter/>
-                    </Canvas>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
 </ResourceDictionary>
