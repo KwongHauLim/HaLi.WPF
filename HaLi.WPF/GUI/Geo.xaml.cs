@@ -13,6 +13,54 @@ namespace HaLi.WPF.GUI
     {
         public event PropertyChangedEventHandler PropertyChanged;
 
+
+        public Brush BorderBrush
+        {
+            get { return (Brush)GetValue(BorderBrushProperty); }
+            set { SetValue(BorderBrushProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for BorderBrush.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty BorderBrushProperty =
+            DependencyProperty.Register("BorderBrush", typeof(Brush), typeof(Geo), new PropertyMetadata(null));
+
+
+        public double BorderThickness
+        {
+            get { return (double)GetValue(BorderThicknessProperty); }
+            set { SetValue(BorderThicknessProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for BorderThickness.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty BorderThicknessProperty =
+            DependencyProperty.Register("BorderThickness", typeof(double), typeof(Geo), new PropertyMetadata(0d));
+
+
+        public Thickness CornerRadius
+        {
+            get { return (Thickness)GetValue(CornerRadiusProperty); }
+            set { SetValue(CornerRadiusProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for CornerRadius.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty CornerRadiusProperty =
+            DependencyProperty.Register("CornerRadius", typeof(Thickness), typeof(Geo), new PropertyMetadata(new Thickness(0)));
+
+
+        public Thickness Padding
+        {
+            get { return (Thickness)GetValue(PaddingProperty); }
+            set { SetValue(PaddingProperty, value); }
+        }
+
+        // Using a DependencyProperty as the backing store for Padding.  This enables animation, styling, binding, etc...
+        public static readonly DependencyProperty PaddingProperty =
+            DependencyProperty.Register("Padding", typeof(Thickness), typeof(Geo), new PropertyMetadata(new Thickness(0)));
+
+
+
+
+
         public Brush ForegroundOnHover
         {
             get { return (Brush)GetValue(ForegroundOnHoverProperty); }

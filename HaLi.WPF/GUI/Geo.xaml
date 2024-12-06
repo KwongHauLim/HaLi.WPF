@@ -11,8 +11,8 @@
     MouseLeftButtonDown="OnMouseDown" MouseEnter="OnMouseEnter" MouseLeave="OnMouseLeave"
     d:DesignHeight="100" d:DesignWidth="100"
     mc:Ignorable="d">
-    <hc:SimplePanel x:Name="uiBack">
-        <Image Width="{Binding ActualWidth, ElementName=uc, Mode=OneWay}" Height="{Binding ActualHeight, ElementName=uc, Mode=OneWay}">
+    <Border x:Name="uiBack" BorderBrush="{Binding BorderBrush, ElementName=uc, Mode=OneWay}" BorderThickness="{Binding BorderThickness, ElementName=uc, Mode=OneWay}" CornerRadius="{Binding CornerRadius, ElementName=uc, Mode=OneWay}" ClipToBounds="True" Width="{Binding ActualWidth, ElementName=uc, Mode=OneWay}" Height="{Binding ActualHeight, ElementName=uc, Mode=OneWay}" >
+        <Image Margin="{Binding Padding, ElementName=uc, Mode=OneWay}">
             <Image.Source>
                 <DrawingImage>
                     <DrawingImage.Drawing>
@@ -21,5 +21,5 @@
                 </DrawingImage>
             </Image.Source>
         </Image>
-    </hc:SimplePanel>
+    </Border>
 </UserControl>
