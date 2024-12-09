@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Media;
 
 namespace HaLi.WPF.Board.Shapes;
@@ -17,7 +18,7 @@ public class Line : Shape
     public double Y1 { get; set; }
     public double X2 { get; set; }
     public double Y2 { get; set; }
-    public double Thickness { get; set; }
+    public double Thickness { get; set; } = 1d;
     public Color Color { get; set; } = Colors.Black;
 }
 
@@ -25,11 +26,10 @@ public class Rectangle : Shape
 {
     public double X { get; set; }
     public double Y { get; set; }
-    public double Width { get; set; }
-    public double Height { get; set; }
-    public double StrokeThickness { get; set; }
-    public string Stroke { get; set; }
-    public string Fill { get; set; }
+    public Size Size { get; set; } = new Size(1d, 1d);
+    public double StrokeThickness { get; set; } = 1d;
+    public Brush Stroke { get; set; } = Brushes.Black;
+    public Brush Fill { get; set; } = Brushes.Transparent;
 }
 
 public class Hand : Shape

@@ -39,13 +39,13 @@ public partial class Line : LineBase
         if (!IsInitialized || System.ComponentModel.DesignerProperties.GetIsInDesignMode(this))
             return;
 
-        var x1 = Math.Min(X1, X2);
-        var y1 = Math.Min(Y1, Y2);
-        var x2 = Math.Max(X1, X2);
-        var y2 = Math.Max(Y1, Y2);
+        var x1 = X1;
+        var y1 = Y1;
+        var x2 = X2;
+        var y2 = Y2;
 
-        Canvas.SetLeft(uiCanvas, x1);
-        Canvas.SetTop(uiCanvas, y1);
+        Canvas.SetLeft(this, Math.Min(x1, x2));
+        Canvas.SetTop(this, Math.Min(y1, y2));
 
 
         double h1 = Thickness / 2d;

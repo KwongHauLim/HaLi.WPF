@@ -97,8 +97,8 @@ public class LineEdit : EditBase
         {
             case EditMouse.MouseEvent.Down:
                 editing = new Line();
-                editing.Shape.X1 = Mouse.StartPosition.X;
-                editing.Shape.Y1 = Mouse.StartPosition.Y;
+                editing.Shape.X1 = editing.Shape.X2 = Mouse.StartPosition.X;
+                editing.Shape.Y1 = editing.Shape.Y2 = Mouse.StartPosition.Y;
                 Helper.CopyProperties(editing.Shape, editing);
                 Board.uiCanvas.Children.Add(editing);
                 break;

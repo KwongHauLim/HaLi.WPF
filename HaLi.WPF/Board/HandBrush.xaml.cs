@@ -171,7 +171,7 @@ public partial class HandBrush : InkCanvas
                 //[关键]OpacityMask了解下？也许有童鞋想到的办法是，各种颜色的图片来一张？
                 conext.PushOpacityMask(new ImageBrush(new BitmapImage(Texture)));
                 //用颜色生成画笔画一个矩形
-                conext.DrawRectangle(new SolidColorBrush(Color), null, new Rect(0, 0, size, size));
+                conext.DrawRectangle(new SolidColorBrush(Color), null, new System.Windows.Rect(0, 0, size, size));
                 conext.Close();
             }
             var rtb = new RenderTargetBitmap(size, size, 96d, 96d, PixelFormats.Pbgra32);
@@ -223,7 +223,7 @@ public partial class HandBrush : InkCanvas
                     }
 
                     //画图，没啥可说的
-                    drawingContext.DrawImage(Image, new Rect(x - w2 / 2.0, y - w2 / 2.0, w2, w2));
+                    drawingContext.DrawImage(Image, new System.Windows.Rect(x - w2 / 2.0, y - w2 / 2.0, w2, w2));
 
                     //再把新的坐标赋值给p1，以序后来
                     p1 = new Point(x, y);

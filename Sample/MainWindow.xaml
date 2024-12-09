@@ -11,13 +11,15 @@
         Title="MainWindow" Height="450" Width="800" ResizeMode="NoResize" Loaded="OnLoaded">
     <Window.Resources>
         <Geometry x:Key="GeoLine">M1024.002617 83.148882L83.151499 1024 0.002617 940.851118 940.853735 0 1024.002617 83.148882z m0 0</Geometry>
+        <Geometry x:Key="GeoRect">M128 853.333333h768a42.666667 42.666667 0 0 0 42.666667-42.666666V213.333333a42.666667 42.666667 0 0 0-42.666667-42.666666H128a42.666667 42.666667 0 0 0-42.666667 42.666666v597.333334a42.666667 42.666667 0 0 0 42.666667 42.666666zM170.666667 256h682.666666v512H170.666667V256z</Geometry>
     </Window.Resources>
     <DockPanel>
         <Border DockPanel.Dock="Top" Background="LightGray" BorderThickness="0,0,0,2" BorderBrush="Gray">
             <hc:UniformSpacingPanel>
                 <Border Background="White" BorderBrush="Gray" BorderThickness="1" CornerRadius="4">
-                    <hc:UniformSpacingPanel Margin="4,2">
-                        <hali:Geo Geometry="{StaticResource GeoLine}" Width="30" Height="30" BorderBrush="Gray" BorderThickness="1" Padding="2" OnClick="OnClick_Line"/>
+                    <hc:UniformSpacingPanel Margin="4,2" HorizontalSpacing="2">
+                        <hali:Geo x:Name="uiLine" Geometry="{StaticResource GeoLine}" Width="30" Height="30" BorderBrush="Gray" BorderThickness="1" Padding="2" OnClick="OnClick_Line"/>
+                        <hali:Geo x:Name="uiRect" Geometry="{StaticResource GeoRect}" Width="30" Height="30" BorderBrush="Gray" BorderThickness="1" Padding="2" OnClick="OnClick_Rect"/>
                     </hc:UniformSpacingPanel>
                 </Border>
             </hc:UniformSpacingPanel>

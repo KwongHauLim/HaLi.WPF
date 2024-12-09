@@ -1,4 +1,5 @@
 ﻿using HaLi.WPF.Board;
+using HaLi.WPF.GUI;
 using System.IO;
 using System.Text;
 using System.Text.Json;
@@ -19,9 +20,13 @@ namespace Sample
     /// </summary>
     public partial class MainWindow : Window
     {
+        private List<Geo> Buttons = new List<Geo>();
+
         public MainWindow()
         {
             InitializeComponent();
+
+            Buttons.AddRange(new Geo[] { uiLine, uiRect });
         }
 
         private void OnLoaded(object sender, RoutedEventArgs e)
@@ -49,10 +54,20 @@ namespace Sample
 
         }
 
-        private void OnClick_Line(object sender, EventArgs e)
+        private void StartEdit<T>(HaLi.WPF.GUI.Geo block)
+            where T : EditBase, new()
         {
-            //uiBoard.Editor = new HaLi.WPF.Board.LineEdit();
-            uiBoard.StartEdit<LineEdit>();
+            foreach (var item in Buttons)
+            {
+                item.Background = Brushes.Transparent;
+            }
+
+            block.Background = Brushes.CornflowerBlue;
+            uiBoard.StartEdit<T>();
         }
+
+        private void OnClick_Line(object sender, EventArgs e) => StartEdit<LineEdit>(uiLine);
+
+        private void OnClick_Rect(object sender, EventArgs e) => StartEdit<RectEdit>(uiRect);
     }
 }
