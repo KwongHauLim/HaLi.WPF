@@ -49,12 +49,18 @@ public partial class Rect : RectBase
 
         uiRect.Width = Size.Width;
         uiRect.Height = Size.Height;
-        uiRect.Stroke = Stroke;
+        uiRect.Stroke = new SolidColorBrush(Stroke);
         uiRect.StrokeThickness = StrokeThickness;
-        uiRect.Fill = Fill;
+        uiRect.Fill = new SolidColorBrush(Fill);
         //Stroke = Shape.Stroke;
         //StrokeThickness = Shape.StrokeThickness;
 
         base.UpdateGUI();
+    }
+
+    public override void StopEdit()
+    {
+        base.StopEdit();
+        uiCanvas.IsHitTestVisible = false;
     }
 }

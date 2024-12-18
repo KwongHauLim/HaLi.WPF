@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Nodes;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -60,15 +61,41 @@ namespace HaLi.WPF.Board
         {
         }
 
+        public string Export()
+        {
+            var ja = new JsonArray();
+
+            foreach (var item in uiCanvas.Children)
+            {
+                if (item is DrawBase draw)
+                {
+                    ja.Add(draw.Export());
+                }
+            }
+
+            return ja.ToString();
+        }
+
+        public void Import(string data)
+        {
+        }
+
         public void StartEdit<T>()
             where T : EditBase, new()
         {
+            StopEdit();
+
             Editor = new T();
             Editor.Board = this;
+            Editor.StartEdit();
         }
 
         public void StopEdit()
         {
+            if (Editor != null)
+            {
+                Editor.StopEdit();
+            }
             Editor = null;
         }
 

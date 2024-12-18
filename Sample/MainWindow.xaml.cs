@@ -66,6 +66,16 @@ namespace Sample
             uiBoard.StartEdit<T>();
         }
 
+        private void OnClick_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void OnClick_Save(object sender, EventArgs e)
+        {
+            var data = uiBoard.Export();
+        }
+
         private void OnClick_Line(object sender, EventArgs e) => StartEdit<LineEdit>(uiLine);
 
         private void OnClick_Rect(object sender, EventArgs e) => StartEdit<RectEdit>(uiRect);
@@ -73,5 +83,7 @@ namespace Sample
         private void OnClick_Hand(object sender, EventArgs e) => StartEdit<HandEdit>(uiHand);
 
         private void OnClick_Text(object sender, EventArgs e) => StartEdit<TextEdit>(uiText);
+
+        private void OnClick_Image(object sender, EventArgs e) => StartEdit<ImageEdit>(uiImage);
     }
 }

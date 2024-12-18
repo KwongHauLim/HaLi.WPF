@@ -3,7 +3,7 @@ using System.Windows;
 
 namespace HaLi.WPF.Board;
 
-public class TextBoxBase : DrawBase<Shapes.TextBox>
+public class TextBoxBase : DrawElement<Shapes.TextBox>
 {
     public double X
     {
@@ -59,7 +59,7 @@ public class TextEdit : EditBase
             text.Y = Mouse.Position.Y;
             text.Shape.Text = "Text1234";
             Helper.CopyProperties(text.Shape, text);
-            Board.uiCanvas.Children.Add(text);
+            SetEdit(text);
             Board.StopEdit();
         }
     }

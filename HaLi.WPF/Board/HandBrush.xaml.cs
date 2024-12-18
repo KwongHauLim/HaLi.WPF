@@ -185,8 +185,8 @@ public partial class HandBrush : InkCanvas
 
         public void Draw(DrawingContext drawingContext, StylusPointCollection stylusPoints)
         {
-            if (stylusPoints.Count <= 1)
-                return;
+            //if (stylusPoints.Count <= 1)
+            //    return;
 
             if (Image == null)
                 DrawImage();

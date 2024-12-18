@@ -47,6 +47,12 @@ namespace HaLi.WPF.Board
             base.UpdateGUI();
         }
 
+        public override void StopEdit()
+        {
+            base.StopEdit();
+            uiCanvas.IsHitTestVisible = false;
+        }
+
         private void OnKey(object sender, KeyEventArgs e)
         {
             // if key "Enter" is pressed

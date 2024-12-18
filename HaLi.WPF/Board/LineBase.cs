@@ -5,7 +5,7 @@ using System.Windows.Media;
 
 namespace HaLi.WPF.Board;
 
-public class LineBase : DrawBase<Shapes.Line>
+public class LineBase : DrawElement<Shapes.Line>
 {
     public double X1
     {
@@ -79,8 +79,6 @@ public class LineBase : DrawBase<Shapes.Line>
 
 public class LineEdit : EditBase
 {
-    private Line? editing;
-
     public LineEdit()
     {
         var m = new EditMouse.EditMonitor();
@@ -96,25 +94,25 @@ public class LineEdit : EditBase
         switch (e.Event)
         {
             case EditMouse.MouseEvent.Down:
-                editing = new Line();
-                editing.Shape.X1 = editing.Shape.X2 = Mouse.StartPosition.X;
-                editing.Shape.Y1 = editing.Shape.Y2 = Mouse.StartPosition.Y;
-                Helper.CopyProperties(editing.Shape, editing);
-                Board.uiCanvas.Children.Add(editing);
+                var line = new Line();
+                line.Shape.X1 = line.Shape.X2 = Mouse.StartPosition.X;
+                line.Shape.Y1 = line.Shape.Y2 = Mouse.StartPosition.Y;
+                Helper.CopyProperties(line.Shape, line);
+                SetEdit(line);
                 break;
             case EditMouse.MouseEvent.Enter:
                 break;
             case EditMouse.MouseEvent.Leave:
                 break;
             case EditMouse.MouseEvent.Move:
-                if (editing != null)
+                if (Editing is Line l)
                 {
-                    editing.X2 = Mouse.Position.X;
-                    editing.Y2 = Mouse.Position.Y;
+                    l.X2 = Mouse.Position.X;
+                    l.Y2 = Mouse.Position.Y;
                 }
                 break;
             case EditMouse.MouseEvent.Up:
-                editing = null;
+                StopEdit();
                 break;
         }
     }

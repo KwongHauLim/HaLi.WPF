@@ -44,13 +44,19 @@ public partial class Hand : HandBase
         base.UpdateGUI();
     }
 
-    public override void Export(string path)
+    public override void StopEdit()
     {
-        Shape.Datas = uiCanvas.Export();
-        base.Export(path);
+        base.StopEdit();
+        uiCanvas.IsHitTestVisible = false;
     }
 
-    public override void Import(JsonDocument json)
+    public override JsonElement Export()
+    {
+        Shape.Datas = uiCanvas.Export();
+        return base.Export();
+    }
+
+    public override void Import(JsonElement json)
     {
         base.Import(json);
         uiCanvas.Import(Shape.Datas);

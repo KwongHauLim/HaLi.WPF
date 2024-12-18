@@ -1,9 +1,10 @@
 ﻿using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 
 namespace HaLi.WPF.Board;
 
-public class HandBase : DrawBase<Shapes.Hand>
+public class HandBase : DrawElement<Shapes.Hand>
 {
 
 
@@ -67,10 +68,10 @@ public class HandBase : DrawBase<Shapes.Hand>
 
 public class HandEdit : EditBase
 {
-    private Hand? editing;
-
-    public HandEdit()
+    protected internal override void StartEdit()
     {
-        editing = new Hand();
+        base.StartEdit();
+
+        SetEdit(new Hand());
     }
 }

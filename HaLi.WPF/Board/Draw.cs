@@ -28,8 +28,8 @@ public class Rectangle : Shape
     public double Y { get; set; }
     public Size Size { get; set; } = new Size(1d, 1d);
     public double StrokeThickness { get; set; } = 1d;
-    public Brush Stroke { get; set; } = Brushes.Black;
-    public Brush Fill { get; set; } = Brushes.Transparent;
+    public Color Stroke { get; set; } = Colors.Black;
+    public Color Fill { get; set; } = Colors.Transparent;
 }
 
 public class Hand : Shape
@@ -52,4 +52,9 @@ public class Hand : Shape
 public class TextBox : Shape
 {
     public string Text { get; set; } = "";
+}
+
+public class Image : Shape
+{
+    public string Data { get; set; } = "";
 }

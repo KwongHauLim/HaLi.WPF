@@ -3,6 +3,7 @@ using HandyControl.Tools.Extension;
 using System.ComponentModel;
 using System.Reflection;
 using System.Text.Json;
+using System.Text.Json.Nodes;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -10,26 +11,20 @@ using System.Windows.Input;
 namespace HaLi.WPF.Board;
 
 [EditorBrowsable(EditorBrowsableState.Never)]
-public abstract class DrawBase<T> : UserControl, INotifyPropertyChanged
-    where T : Shapes.Shape, new()
+public abstract class DrawBase : UserControl
 {
-    public event PropertyChangedEventHandler? PropertyChanged;
-
-    public T Shape { get; set; }
 
     protected bool _flagBatch;
     protected bool _flagChanged;
+    protected bool _flagEditing;
 
     protected virtual bool IsWholeCanvas => true;
 
+    public abstract JsonElement Export();
+    public abstract void Import(JsonElement json);
+
     protected override void OnInitialized(EventArgs e)
     {
-        if (Shape == null)
-        {
-            Shape = new T();
-            OnNewShape(Shape);
-        }
-
         _flagBatch = true;
 
         base.OnInitialized(e);
@@ -43,23 +38,67 @@ public abstract class DrawBase<T> : UserControl, INotifyPropertyChanged
         Loaded += OnLoaded;
     }
 
+    protected virtual void ChildInit()
+    {
+        _flagChanged = true;
+    }
+
+    protected virtual void OnLoaded(object sender, RoutedEventArgs e)
+    {
+        _flagBatch = false;
+
+        if (IsWholeCanvas)
+        {
+            SetBinding(WidthProperty, GuiHelper.OneWay(Parent, "ActualWidth"));
+            SetBinding(HeightProperty, GuiHelper.OneWay(Parent, "ActualHeight"));
+        }
+
+        UpdateGUI();
+    }
+
+    protected virtual void UpdateGUI()
+    {
+        _flagChanged = false;
+    }
+
+    public virtual void StartEdit()
+    {
+        _flagEditing = true;
+    }
+
+    public virtual void StopEdit()
+    {
+        _flagEditing = false;
+    }
+}
+
+[EditorBrowsable(EditorBrowsableState.Never)]
+public abstract class DrawElement<T> : DrawBase, INotifyPropertyChanged
+    where T : Shapes.Shape, new()
+{
+    public event PropertyChangedEventHandler? PropertyChanged;
+
+    public T Shape { get; set; }
+
+
+    protected override void OnInitialized(EventArgs e)
+    {
+        if (Shape == null)
+        {
+            Shape = new T();
+            OnNewShape(Shape);
+        }
+
+        base.OnInitialized(e);
+    }
+
     protected virtual void OnNewShape(T shape)
     {
     }
 
-    public virtual void Export(string path)
-    {
-        var json = JsonSerializer.Serialize(Shape);
-        System.IO.File.WriteAllText(path, json);
-    }
+    public override JsonElement Export() => JsonSerializer.SerializeToElement(Shape);
 
-    public void Import(string path)
-    {
-        var json = System.IO.File.ReadAllText(path);
-        Import(JsonDocument.Parse(json));
-    }
-
-    public virtual void Import(JsonDocument json)
+    public override void Import(JsonElement json)
     {
         Shape = json.Deserialize<T>() ?? Shape;
 
@@ -83,34 +122,11 @@ public abstract class DrawBase<T> : UserControl, INotifyPropertyChanged
         UpdateGUI();
     }
 
-    protected virtual void OnLoaded(object sender, RoutedEventArgs e)
-    {
-        _flagBatch = false;
-
-        if (IsWholeCanvas)
-        {
-            SetBinding(WidthProperty, GuiHelper.OneWay(Parent, "ActualWidth"));
-            SetBinding(HeightProperty, GuiHelper.OneWay(Parent, "ActualHeight"));
-        }
-
-        UpdateGUI();
-    }
-
-    protected virtual void ChildInit()
-    {
-        _flagChanged = true;
-    }
-
-    protected virtual void UpdateGUI()
-    {
-        _flagChanged = false;
-    }
-
     protected override void OnPropertyChanged(DependencyPropertyChangedEventArgs e)
     {
         base.OnPropertyChanged(e);
 
-        //if (IsInitialized)
+        if (Shape != null)
         {
             var name = e.Property.Name;
             if (IsInitialized)
@@ -135,6 +151,7 @@ public abstract class DrawBase<T> : UserControl, INotifyPropertyChanged
 public abstract class EditBase
 {
     public BoardCanvas Board { get; internal set; }
+    public DrawBase Editing { get; internal set; }
 
     public class EditMouse
     {
@@ -286,4 +303,61 @@ public abstract class EditBase
     }
 
     public EditKeyboard Keyboard { get; } = new();
+
+    internal protected virtual void StartEdit()
+    {
+        Editing?.StartEdit();
+    }
+
+    internal protected virtual void StopEdit()
+    {
+        Editing?.StopEdit();
+    }
+
+    protected void SetEdit(DrawBase element)
+    {
+        Editing = element;
+        if (element != null)
+        {
+            Board.uiCanvas.Children.Add(element);
+        }
+    }
+}
+
+[EditorBrowsable(EditorBrowsableState.Never)]
+public abstract class DrawOnCanvas<T> : DrawElement<T>
+    where T : Shapes.Shape, new()
+{
+    public double X
+    {
+        get { return (double)GetValue(XProperty); }
+        set { SetValue(XProperty, value); }
+    }
+
+    // Using a DependencyProperty as the backing store for X.  This enables animation, styling, binding, etc...
+    public static readonly DependencyProperty XProperty =
+        DependencyProperty.Register("X", typeof(double), typeof(DrawOnCanvas<T>), new PropertyMetadata(0d));
+
+
+    public double Y
+    {
+        get { return (double)GetValue(YProperty); }
+        set { SetValue(YProperty, value); }
+    }
+
+    // Using a DependencyProperty as the backing store for Y.  This enables animation, styling, binding, etc...
+    public static readonly DependencyProperty YProperty =
+        DependencyProperty.Register("Y", typeof(double), typeof(DrawOnCanvas<T>), new PropertyMetadata(0d));
+
+
+    protected override void UpdateGUI()
+    {
+        if (!IsInitialized || System.ComponentModel.DesignerProperties.GetIsInDesignMode(this))
+            return;
+
+        Canvas.SetLeft(this, X);
+        Canvas.SetTop(this, Y);
+
+        base.UpdateGUI();
+    }
 }

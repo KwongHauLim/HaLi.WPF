@@ -27,13 +27,6 @@ public partial class Line : LineBase
         SetBinding(HeightProperty, GuiHelper.OneWay(Parent, "ActualHeight"));
     }
 
-    public override void Import(JsonDocument json)
-    {
-        Brush = null;
-
-        base.Import(json);
-    }
-
     protected override void UpdateGUI()
     {
         if (!IsInitialized || System.ComponentModel.DesignerProperties.GetIsInDesignMode(this))
@@ -134,5 +127,11 @@ public partial class Line : LineBase
         uiPoly.Fill = Brush;
 
         base.UpdateGUI();
+    }
+
+    public override void StopEdit()
+    {
+        base.StopEdit();
+        uiCanvas.IsHitTestVisible = false;
     }
 }

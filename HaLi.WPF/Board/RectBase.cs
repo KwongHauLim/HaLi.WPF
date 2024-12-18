@@ -4,7 +4,7 @@ using System.Windows.Media;
 
 namespace HaLi.WPF.Board;
 
-public class RectBase : DrawBase<Shapes.Rectangle>
+public class RectBase : DrawElement<Shapes.Rectangle>
 {
     public double X
     {
@@ -50,26 +50,26 @@ public class RectBase : DrawBase<Shapes.Rectangle>
         DependencyProperty.Register("StrokeThickness", typeof(double), typeof(RectBase), new PropertyMetadata(1d));
 
 
-    public Brush Stroke
+    public Color Stroke
     {
-        get { return (Brush)GetValue(StrokeProperty); }
+        get { return (Color)GetValue(StrokeProperty); }
         set { SetValue(StrokeProperty, value); }
     }
 
     // Using a DependencyProperty as the backing store for Stroke.  This enables animation, styling, binding, etc...
     public static readonly DependencyProperty StrokeProperty =
-        DependencyProperty.Register("Stroke", typeof(Brush), typeof(RectBase), new PropertyMetadata(Brushes.Black));
+        DependencyProperty.Register("Stroke", typeof(Color), typeof(RectBase), new PropertyMetadata(Colors.Black));
 
 
-    public Brush Fill
+    public Color Fill
     {
-        get { return (Brush)GetValue(FillProperty); }
+        get { return (Color)GetValue(FillProperty); }
         set { SetValue(FillProperty, value); }
     }
 
     // Using a DependencyProperty as the backing store for Fill.  This enables animation, styling, binding, etc...
     public static readonly DependencyProperty FillProperty =
-        DependencyProperty.Register("Fill", typeof(Brush), typeof(RectBase), new PropertyMetadata(Brushes.Transparent));
+        DependencyProperty.Register("Fill", typeof(Color), typeof(RectBase), new PropertyMetadata(Colors.Transparent));
 
 
 
@@ -77,8 +77,6 @@ public class RectBase : DrawBase<Shapes.Rectangle>
 
 public class RectEdit : EditBase
 {
-    private Rect? editing;
-
     public RectEdit()
     {
         var m = new EditMouse.EditMonitor();
@@ -94,46 +92,52 @@ public class RectEdit : EditBase
         switch (e.Event)
         {
             case EditMouse.MouseEvent.Down:
-                editing = new Rect();
-                editing.LeftTop = editing.RightTop = editing.RightBottom = editing.LeftBottom = Mouse.StartPosition;
-                editing.Shape.X = Mouse.StartPosition.X;
-                editing.Shape.Y = Mouse.StartPosition.Y;
-                Helper.CopyProperties(editing.Shape, editing);
-                Board.uiCanvas.Children.Add(editing);
+                var rect = new Rect();
+                rect.LeftTop = rect.RightTop = rect.RightBottom = rect.LeftBottom = Mouse.StartPosition;
+                rect.Shape.X = Mouse.StartPosition.X;
+                rect.Shape.Y = Mouse.StartPosition.Y;
+                Helper.CopyProperties(rect.Shape, rect);
+                SetEdit(rect);
                 break;
             case EditMouse.MouseEvent.Enter:
                 break;
             case EditMouse.MouseEvent.Leave:
                 break;
             case EditMouse.MouseEvent.Move:
-                if (editing != null)
+                if (Editing is Rect r)
                 {
                     var x2 = Mouse.Position.X;
                     var y2 = Mouse.Position.Y;
 
-                    var left = Math.Min(editing.LeftTop.X, x2);
-                    var top = Math.Min(editing.LeftTop.Y, y2);
-                    var right = Math.Max(editing.RightBottom.X, x2);
-                    var bottom = Math.Max(editing.RightBottom.Y, y2);
+                    var left = Math.Min(r.LeftTop.X, x2);
+                    var top = Math.Min(r.LeftTop.Y, y2);
+                    var right = Math.Max(r.RightBottom.X, x2);
+                    var bottom = Math.Max(r.RightBottom.Y, y2);
 
-                    editing.LeftTop = new Point(left, top);
-                    editing.RightTop = new Point(right, top);
-                    editing.RightBottom = new Point(right, bottom);
-                    editing.LeftBottom = new Point(left, bottom);
+                    r.LeftTop = new Point(left, top);
+                    r.RightTop = new Point(right, top);
+                    r.RightBottom = new Point(right, bottom);
+                    r.LeftBottom = new Point(left, bottom);
 
                     // Center
-                    editing.X = (left + right) / 2;
-                    editing.Y = (top + bottom) / 2;
+                    r.X = (left + right) / 2;
+                    r.Y = (top + bottom) / 2;
 
                     // Width & Height
                     var w = right - left;
                     var h = bottom - top;
-                    editing.Size = new Size(w, h);
+                    r.Size = new Size(w, h);
                 }
                 break;
             case EditMouse.MouseEvent.Up:
-                editing = null;
+                StopEdit();
                 break;
         }
+    }
+
+    protected internal override void StopEdit()
+    {
+        base.StopEdit();
+        Editing = null;
     }
 }
