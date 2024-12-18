@@ -12,6 +12,8 @@
     <Window.Resources>
         <Geometry x:Key="GeoLine">M1024.002617 83.148882L83.151499 1024 0.002617 940.851118 940.853735 0 1024.002617 83.148882z m0 0</Geometry>
         <Geometry x:Key="GeoRect">M128 853.333333h768a42.666667 42.666667 0 0 0 42.666667-42.666666V213.333333a42.666667 42.666667 0 0 0-42.666667-42.666666H128a42.666667 42.666667 0 0 0-42.666667 42.666666v597.333334a42.666667 42.666667 0 0 0 42.666667 42.666666zM170.666667 256h682.666666v512H170.666667V256z</Geometry>
+        <Geometry x:Key="GeoBrush">M298.666667 597.333333c-70.613333 0-128 57.386667-128 128 0 55.893333-49.28 85.333333-85.333334 85.333334 39.253333 52.053333 106.453333 85.333333 170.666667 85.333333 94.293333 0 170.666667-76.373333 170.666667-170.666667 0-70.613333-57.386667-128-128-128zM883.413333 197.546667l-56.96-56.96c-16.64-16.64-43.733333-16.64-60.373333 0L384 522.666667l117.333333 117.333333 382.08-382.08c16.853333-16.853333 16.853333-43.733333 0-60.373333z</Geometry>
+        <Geometry x:Key="GeoText">M810.666667 170.666667H213.333333v85.333333h256v597.333333h85.333334V256h256z</Geometry>
     </Window.Resources>
     <DockPanel>
         <Border DockPanel.Dock="Top" Background="LightGray" BorderThickness="0,0,0,2" BorderBrush="Gray">
@@ -20,6 +22,8 @@
                     <hc:UniformSpacingPanel Margin="4,2" HorizontalSpacing="2">
                         <hali:Geo x:Name="uiLine" Geometry="{StaticResource GeoLine}" Width="30" Height="30" BorderBrush="Gray" BorderThickness="1" Padding="2" OnClick="OnClick_Line"/>
                         <hali:Geo x:Name="uiRect" Geometry="{StaticResource GeoRect}" Width="30" Height="30" BorderBrush="Gray" BorderThickness="1" Padding="2" OnClick="OnClick_Rect"/>
+                        <hali:Geo x:Name="uiText" Geometry="{StaticResource GeoText}" Width="30" Height="30" BorderBrush="Gray" BorderThickness="1" Padding="2" OnClick="OnClick_Text"/>
+                        <hali:Geo x:Name="uiHand" Geometry="{StaticResource GeoBrush}" Width="30" Height="30" BorderBrush="Gray" BorderThickness="1" Padding="2" OnClick="OnClick_Hand"/>
                     </hc:UniformSpacingPanel>
                 </Border>
             </hc:UniformSpacingPanel>

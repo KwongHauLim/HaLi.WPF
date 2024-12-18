@@ -67,6 +67,11 @@ namespace HaLi.WPF.Board
             Editor.Board = this;
         }
 
+        public void StopEdit()
+        {
+            Editor = null;
+        }
+
         private void OnMouseEnter(object sender, MouseEventArgs e)
         {
             Editor?.Mouse.OnMouseEnter(sender, e);

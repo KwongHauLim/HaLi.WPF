@@ -69,5 +69,9 @@ namespace Sample
         private void OnClick_Line(object sender, EventArgs e) => StartEdit<LineEdit>(uiLine);
 
         private void OnClick_Rect(object sender, EventArgs e) => StartEdit<RectEdit>(uiRect);
+
+        private void OnClick_Hand(object sender, EventArgs e) => StartEdit<HandEdit>(uiHand);
+
+        private void OnClick_Text(object sender, EventArgs e) => StartEdit<TextEdit>(uiText);
     }
 }

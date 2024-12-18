@@ -8,8 +8,11 @@ namespace HaLi.WPF.Helpers;
 
 internal static class Helper
 {
-    public static void CopyProperties<T,U>(this T source, U target)
+    public static void CopyProperties<T, U>(this T source, U target)
     {
+        if (source == null) return;
+        if (target == null) return;
+
         var PTs = typeof(T).GetProperties();
         var PUs = typeof(U).GetProperties();
         foreach (var PT in PTs)

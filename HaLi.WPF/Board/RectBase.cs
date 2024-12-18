@@ -1,5 +1,4 @@
 ﻿using HaLi.WPF.Helpers;
-using System.Security.Cryptography.Xml;
 using System.Windows;
 using System.Windows.Media;
 

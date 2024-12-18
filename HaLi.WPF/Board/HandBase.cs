@@ -64,3 +64,13 @@ public class HandBase : DrawBase<Shapes.Hand>
     }
 
 }
+
+public class HandEdit : EditBase
+{
+    private Hand? editing;
+
+    public HandEdit()
+    {
+        editing = new Hand();
+    }
+}

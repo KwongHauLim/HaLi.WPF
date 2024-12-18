@@ -1,0 +1,13 @@
+﻿<local:TextBoxBase
+    x:Class="HaLi.WPF.Board.TextBox"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:HaLi.WPF.Board"
+    xmlns:hc="https://handyorg.github.io/handycontrol"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+    <Canvas x:Name="uiCanvas" ClipToBounds="False" HorizontalAlignment="Left" VerticalAlignment="Top">
+        <hc:TextBox x:Name="uiText" Background="Transparent" AcceptsTab="False" AcceptsReturn="False" KeyDown="OnKey"/>
+    </Canvas>
+</local:TextBoxBase>

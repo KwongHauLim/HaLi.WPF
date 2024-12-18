@@ -48,3 +48,8 @@ public class Hand : Shape
 
     public List<StrokeData> Datas { get; set; }
 }
+
+public class TextBox : Shape
+{
+    public string Text { get; set; } = "";
+}
