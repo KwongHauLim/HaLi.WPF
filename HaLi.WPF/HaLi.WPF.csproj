@@ -50,4 +50,8 @@
     <Resource Include="Resources\Images\chalk.png" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Tray\" />
+  </ItemGroup>
+
 </Project>
