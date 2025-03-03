@@ -1,8 +1,8 @@
-﻿using HaLi.WPF.Board;
-using HaLi.WPF.GUI;
-using System.IO;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Text;
-using System.Text.Json;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -13,24 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Sample
+namespace Sample.Panels
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for RegularPanelSample.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class RegularPanelSample : UserControl
     {
-
-        public MainWindow()
+        public RegularPanelSample()
         {
             InitializeComponent();
-        }
-
-        private void OnLoaded(object sender, RoutedEventArgs e)
-        {
-            PreviewKeyDown += (_, e) =>
-            {
-            };
         }
     }
 }

@@ -1,0 +1,27 @@
+﻿<UserControl
+    x:Class="Sample.Panels.FileBoxSample"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:local="clr-namespace:Sample.Panels"
+    xmlns:hc="https://handyorg.github.io/handycontrol"
+    xmlns:hali="clr-namespace:HaLi.WPF.GUI;assembly=HaLi.WPF"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    d:DesignHeight="450"
+    d:DesignWidth="800"
+    mc:Ignorable="d">
+    <hc:SimplePanel>
+        <hc:UniformSpacingPanel Orientation="Vertical" VerticalSpacing="8" HorizontalAlignment="Center" VerticalAlignment="Center" Width="300">
+            <hali:FileBox x:Name="uiFile" Label="File:" ShowFullPath="False"/>
+            <hali:FileBox x:Name="uiDirectory" Label="Directory:" DirectoryMode="True" ShowFullPath="True"/>
+        </hc:UniformSpacingPanel>
+
+        <Border BorderThickness="1" BorderBrush="Gray" CornerRadius="4" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="8">
+            <hc:UniformSpacingPanel Orientation="Vertical" VerticalSpacing="8" HorizontalAlignment="Center" VerticalAlignment="Center" Width="200" Margin="8">
+                <hc:SimpleText Text="Binding Data:"/>
+                <hc:SimpleText Text="{Binding Path, ElementName=uiFile}"/>
+                <hc:SimpleText Text="{Binding Path, ElementName=uiDirectory}"/>
+            </hc:UniformSpacingPanel>
+        </Border>
+    </hc:SimplePanel>
+</UserControl>
