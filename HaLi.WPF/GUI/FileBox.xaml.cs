@@ -99,6 +99,7 @@ namespace HaLi.WPF.GUI
 
         private void OnInput(object sender, TextChangedEventArgs e)
         {
+            Path = uiText.Text;
         }
 
         private void OnKeyDown(object sender, KeyEventArgs e)
