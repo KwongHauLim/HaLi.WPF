@@ -116,4 +116,10 @@ public class LineEdit : EditBase
                 break;
         }
     }
+
+    protected internal override void StopEdit()
+    {
+        base.StopEdit();
+        Editing = null;
+    }
 }

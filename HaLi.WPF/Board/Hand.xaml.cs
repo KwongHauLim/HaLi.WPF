@@ -1,5 +1,6 @@
 ﻿using HaLi.WPF.Helpers;
 using HandyControl.Tools.Converter;
+using Newtonsoft.Json.Linq;
 using System.ComponentModel;
 using System.IO;
 using System.Text.Json;
@@ -50,13 +51,13 @@ public partial class Hand : HandBase
         uiCanvas.IsHitTestVisible = false;
     }
 
-    public override JsonElement Export()
+    public override JObject Export()
     {
         Shape.Datas = uiCanvas.Export();
         return base.Export();
     }
 
-    public override void Import(JsonElement json)
+    public override void Import(JToken json)
     {
         base.Import(json);
         uiCanvas.Import(Shape.Datas);

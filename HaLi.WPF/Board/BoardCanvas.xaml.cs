@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -63,7 +64,11 @@ namespace HaLi.WPF.Board
 
         public string Export()
         {
-            var ja = new JsonArray();
+            var ja = new JArray();
+            var test = new JObject();
+            test["1"] = 1;
+            test["2"] = "a";
+            ja.Add(test);
 
             foreach (var item in uiCanvas.Children)
             {

@@ -2,11 +2,10 @@
 using HandyControl.Tools.Extension;
 using System.ComponentModel;
 using System.Reflection;
-using System.Text.Json;
-using System.Text.Json.Nodes;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using Newtonsoft.Json.Linq;
 
 namespace HaLi.WPF.Board;
 
@@ -20,8 +19,8 @@ public abstract class DrawBase : UserControl
 
     protected virtual bool IsWholeCanvas => true;
 
-    public abstract JsonElement Export();
-    public abstract void Import(JsonElement json);
+    public abstract JObject Export();
+    public abstract void Import(JToken json);
 
     protected override void OnInitialized(EventArgs e)
     {
@@ -96,11 +95,11 @@ public abstract class DrawElement<T> : DrawBase, INotifyPropertyChanged
     {
     }
 
-    public override JsonElement Export() => JsonSerializer.SerializeToElement(Shape);
+    public override JObject Export() => JObject.FromObject(Shape);
 
-    public override void Import(JsonElement json)
+    public override void Import(JToken json)
     {
-        Shape = json.Deserialize<T>() ?? Shape;
+        Shape = json.ToObject<T>() ?? Shape;
 
         // Use reflection to copy values from Shape to this class properties
         Type shapeType = typeof(T);
@@ -151,7 +150,7 @@ public abstract class DrawElement<T> : DrawBase, INotifyPropertyChanged
 public abstract class EditBase
 {
     public BoardCanvas Board { get; internal set; }
-    public DrawBase Editing { get; internal set; }
+    public DrawBase? Editing { get; internal set; }
 
     public class EditMouse
     {
