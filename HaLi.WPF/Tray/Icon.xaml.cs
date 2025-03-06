@@ -1,5 +1,6 @@
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media.Imaging;
 
 namespace HaLi.WPF.Tray
@@ -43,7 +44,7 @@ namespace HaLi.WPF.Tray
         public void AddMenu(string key, Action action)
         {
             var item = new MenuItem();
-            item.SetResourceReference(MenuItem.HeaderProperty, key);
+            item.SetValue(MenuItem.HeaderProperty, key); // set header (key)
             item.Click += (s, e) => action();
             uiMenu.Items.Add(item);
         }
@@ -51,9 +52,26 @@ namespace HaLi.WPF.Tray
         public void AddMenu(string key, object icon, Action action)
         {
             var item = new MenuItem();
-            item.SetResourceReference(MenuItem.HeaderProperty, key);
+            item.SetValue(MenuItem.HeaderProperty, key); // set header (key)
             item.Icon = icon;
             item.Click += (s, e) => action();
+            uiMenu.Items.Add(item);
+        }
+
+        public void AddMenu(string key, ICommand cmd)
+        {
+            var item = new MenuItem();
+            item.SetValue(MenuItem.HeaderProperty, key); // set header (key)
+            item.Click += (s, e) => cmd.Execute(s);
+            uiMenu.Items.Add(item);
+        }
+
+        public void AddMenu(string key, object icon, ICommand cmd)
+        {
+            var item = new MenuItem();
+            item.SetValue(MenuItem.HeaderProperty, key); // set header (key)
+            item.Icon = icon;
+            item.Click += (s, e) => cmd.Execute(s);
             uiMenu.Items.Add(item);
         }
 
