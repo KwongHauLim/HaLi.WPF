@@ -1,0 +1,54 @@
+﻿<UserControl
+    x:Name="uc"
+    x:Class="HaLi.WPF.GUI.Button"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:local="clr-namespace:HaLi.WPF.GUI"
+    xmlns:hc="https://handyorg.github.io/handycontrol"
+    xmlns:Converters="clr-namespace:HaLi.WPF.Converters"
+    Loaded="OnLoaded"
+    Height="40"
+    mc:Ignorable="d">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/HaLi.WPF;component/Themes/WPF.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <Converters:ScaleConverter x:Key="ScaleConverter"/>
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+
+            <Geometry x:Key="Geo_Click">M397.312 462.848l98.304 454.656c4.096 20.48 24.576 36.864 45.056 40.96 20.48 4.096 45.056-8.192 57.344-28.672l57.344-106.496 159.744 159.744c20.48 20.48 57.344 20.48 77.824 0l98.304-98.304c20.48-20.48 20.48-57.344 0-77.824l-163.84-151.552 102.4-57.344c20.48-12.288 32.768-32.768 28.672-57.344-4.096-24.576-20.48-40.96-40.96-45.056L462.848 401.408c-36.864-8.192-73.728 28.672-65.536 61.44zM450.56 229.376c24.576 0 40.96-20.48 40.96-40.96v-122.88c0-24.576-20.48-40.96-40.96-40.96-24.576 0-40.96 20.48-40.96 40.96v122.88c0 20.48 16.384 40.96 40.96 40.96zM299.008 233.472L208.896 147.456c-16.384-20.48-45.056-20.48-61.44 0-16.384 16.384-16.384 40.96 0 57.344l86.016 86.016c16.384 16.384 45.056 16.384 61.44 0 20.48-12.288 20.48-40.96 4.096-57.344zM24.576 446.464c0 24.576 20.48 40.96 40.96 40.96h122.88c24.576 0 40.96-20.48 40.96-40.96s-20.48-40.96-40.96-40.96h-122.88c-24.576 0-40.96 20.48-40.96 40.96zM237.568 602.112l-86.016 86.016c-16.384 16.384-16.384 45.056 0 61.44 16.384 16.384 45.056 16.384 61.44 0l86.016-86.016c16.384-16.384 16.384-45.056 0-61.44-20.48-16.384-45.056-16.384-61.44 0zM667.648 294.912L753.664 204.8c16.384-16.384 16.384-45.056 0-61.44-16.384-16.384-45.056-16.384-61.44 0l-86.016 86.016c-16.384 16.384-16.384 45.056 0 61.44 16.384 20.48 45.056 20.48 61.44 4.096z</Geometry>
+
+            <Color x:Key="RegionColor">#ffffff</Color>
+            <SolidColorBrush x:Key="RegionBrush" Color="{DynamicResource RegionColor}"/>
+            <Color x:Key="BorderColor">#e0e0e0</Color>
+            <SolidColorBrush x:Key="BorderBrush" Color="{DynamicResource BorderColor}"/>
+        </ResourceDictionary>
+    </UserControl.Resources>
+
+    <Border x:Name="b" Background="{StaticResource RegionBrush}" BorderThickness="1" BorderBrush="{StaticResource BorderBrush}" CornerRadius="{Binding ActualHeight, ConverterParameter=0.5, Converter={StaticResource ScaleConverter}, ElementName=b, Mode=OneWay}">
+        <DockPanel x:Name="a">
+            <hc:SimplePanel Height="{Binding ActualHeight, ElementName=a, Mode=OneWay}" Width="{Binding ActualHeight, ElementName=a, Mode=OneWay}" DockPanel.Dock="Left">
+                <Viewbox x:Name="c" Width="{Binding ActualHeight, ConverterParameter=0.7, Converter={StaticResource ScaleConverter}, ElementName=uc, Mode=OneWay}" Height="{Binding Width, ElementName=c}">
+                    <local:Geo x:Name="uiIcon" Geometry="{StaticResource Geo_Click}" Foreground="{DynamicResource PrimaryTextBrush}" Width="{Binding Height, ElementName=c}" Height="{Binding Width, ElementName=c}" />
+                </Viewbox>
+            </hc:SimplePanel>
+            <Viewbox>
+                <hc:SimpleText x:Name="uiLabel" Text="Label" Visibility="Visible" Margin="0,4,4,4" Foreground="{DynamicResource PrimaryTextBrush}" VerticalAlignment="Center" />
+            </Viewbox>
+        </DockPanel>
+    </Border>
+    <!--<Border x:Name="b" Background="{StaticResource RegionBrush}" BorderThickness="1" BorderBrush="{StaticResource BorderBrush}" CornerRadius="{Binding ActualHeight, ConverterParameter=0.5, Converter={StaticResource ScaleConverter}, ElementName=b, Mode=OneWay}" MinWidth="{Binding ActualHeight, ElementName=b, Mode=OneWay}" Height="{Binding ActualHeight, ConverterParameter=0.7, Converter={StaticResource ScaleConverter}, ElementName=uc, Mode=OneWay}" >
+        <Viewbox>
+            <DockPanel x:Name="p" HorizontalAlignment="Center" Margin="4,0">
+                -->
+    <!-- 图标 -->
+    <!--
+                <local:Geo x:Name="uiIcon" Geometry="{StaticResource Geo_Click}" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{DynamicResource PrimaryTextBrush}" Height="{Binding ActualHeight, ConverterParameter=0.45, Converter={StaticResource ScaleConverter}, ElementName=uc, Mode=OneWay}" Width="{Binding ActualHeight, ConverterParameter=0.45, Converter={StaticResource ScaleConverter}, ElementName=uc, Mode=OneWay}"/>
+                <hc:SimpleText x:Name="uiLabel" Text="Label" Margin="2,0" Visibility="Collapsed" VerticalAlignment="Center" Foreground="{DynamicResource PrimaryTextBrush}" FontSize="{Binding ActualHeight, ConverterParameter=0.5, Converter={StaticResource ScaleConverter}, ElementName=uc, Mode=OneWay}" />
+            </DockPanel>
+        </Viewbox>
+    </Border>-->
+</UserControl>
