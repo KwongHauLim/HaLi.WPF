@@ -11,5 +11,5 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800" ResizeMode="NoResize" Loaded="OnLoaded">
 
-    <samples:FileBoxSample/>
+    <samples:PanelButton/>
 </Window>

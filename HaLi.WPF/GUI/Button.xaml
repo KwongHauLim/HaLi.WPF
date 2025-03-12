@@ -35,8 +35,8 @@
                     <local:Geo x:Name="uiIcon" Geometry="{StaticResource Geo_Click}" Foreground="{DynamicResource PrimaryTextBrush}" Width="{Binding Height, ElementName=c}" Height="{Binding Width, ElementName=c}" />
                 </Viewbox>
             </hc:SimplePanel>
-            <Viewbox>
-                <hc:SimpleText x:Name="uiLabel" Text="Label" Visibility="Visible" Margin="0,4,4,4" Foreground="{DynamicResource PrimaryTextBrush}" VerticalAlignment="Center" />
+            <Viewbox x:Name="viewLabel" SizeChanged="viewLabel_SizeChanged">
+                <TextBlock x:Name="uiLabel" Text="Label" Visibility="Visible" Margin="0,4,4,4" Foreground="{DynamicResource PrimaryTextBrush}" VerticalAlignment="Center" />
             </Viewbox>
         </DockPanel>
     </Border>
