@@ -9,7 +9,7 @@
     xmlns:hc="https://handyorg.github.io/handycontrol"
     xmlns:Converters="clr-namespace:HaLi.WPF.Converters"
     Loaded="OnLoaded"
-    d:DesignHeight="40"
+    Height="30"
     mc:Ignorable="d">
     <UserControl.Resources>
         <ResourceDictionary>
