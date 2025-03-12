@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace HaLi.WPF.GUI;
 
@@ -16,14 +17,24 @@ public partial class Button : UserControl
 
     // Using a DependencyProperty as the backing store for ShowLabel.  This enables animation, styling, binding, etc...
     public static readonly DependencyProperty ShowLabelProperty =
-        DependencyProperty.Register("ShowLabel", typeof(bool), typeof(Button), new PropertyMetadata(true, OnShowLabelChanged));
+        DependencyProperty.Register("ShowLabel", typeof(bool), typeof(Button), new PropertyMetadata(true, OnChanged));
 
-    private static void OnShowLabelChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+    public Geometry Icon
+    {
+        get { return (Geometry)GetValue(IconProperty); }
+        set { SetValue(IconProperty, value); }
+    }
+
+    // Using a DependencyProperty as the backing store for Icon.  This enables animation, styling, binding, etc...
+    public static readonly DependencyProperty IconProperty =
+        DependencyProperty.Register("Icon", typeof(Geometry), typeof(Button), new PropertyMetadata(null, OnChanged));
+
+    private static void OnChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         if (d is Button uc)
         {
             var label = uc.uiLabel;
-            if (uc.ShowLabel)
+            if (uc.ShowLabel && !string.IsNullOrEmpty(uc.Label))
             {
                 label.Visibility = Visibility.Visible;
             }
@@ -33,6 +44,19 @@ public partial class Button : UserControl
             }
         }
     }
+
+    public string Label
+    {
+        get { return (string)GetValue(LabelProperty); }
+        set { SetValue(LabelProperty, value); }
+    }
+
+    // Using a DependencyProperty as the backing store for Label.  This enables animation, styling, binding, etc...
+    public static readonly DependencyProperty LabelProperty =
+        DependencyProperty.Register("Label", typeof(string), typeof(Button), new PropertyMetadata(""));
+
+
+
 
     public Button()
     {

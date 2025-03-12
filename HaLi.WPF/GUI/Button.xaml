@@ -9,7 +9,7 @@
     xmlns:hc="https://handyorg.github.io/handycontrol"
     xmlns:Converters="clr-namespace:HaLi.WPF.Converters"
     Loaded="OnLoaded"
-    Height="40"
+    d:DesignHeight="40"
     mc:Ignorable="d">
     <UserControl.Resources>
         <ResourceDictionary>
@@ -32,11 +32,11 @@
         <DockPanel x:Name="a">
             <hc:SimplePanel Height="{Binding ActualHeight, ElementName=a, Mode=OneWay}" Width="{Binding ActualHeight, ElementName=a, Mode=OneWay}" DockPanel.Dock="Left">
                 <Viewbox x:Name="c" Width="{Binding ActualHeight, ConverterParameter=0.7, Converter={StaticResource ScaleConverter}, ElementName=uc, Mode=OneWay}" Height="{Binding Width, ElementName=c}">
-                    <local:Geo x:Name="uiIcon" Geometry="{StaticResource Geo_Click}" Foreground="{DynamicResource PrimaryTextBrush}" Width="{Binding Height, ElementName=c}" Height="{Binding Width, ElementName=c}" />
+                    <local:Geo x:Name="uiIcon" Geometry="{Binding Icon, ElementName=uc}" Foreground="{DynamicResource PrimaryTextBrush}" Width="{Binding Height, ElementName=c}" Height="{Binding Width, ElementName=c}" />
                 </Viewbox>
             </hc:SimplePanel>
-            <Viewbox x:Name="viewLabel" SizeChanged="viewLabel_SizeChanged">
-                <TextBlock x:Name="uiLabel" Text="Label" Visibility="Visible" Margin="0,4,4,4" Foreground="{DynamicResource PrimaryTextBrush}" VerticalAlignment="Center" />
+            <Viewbox x:Name="viewLabel">
+                <TextBlock x:Name="uiLabel" Text="{Binding Label,ElementName=uc}" Visibility="Collapsed" Margin="0,4,4,4" Foreground="{DynamicResource PrimaryTextBrush}" VerticalAlignment="Center" />
             </Viewbox>
         </DockPanel>
     </Border>
