@@ -1,0 +1,18 @@
+﻿<UserControl 
+    x:Class="Sample.Panels.PanelCheckbox"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+    xmlns:local="clr-namespace:Sample.Panels"
+    xmlns:hc="https://handyorg.github.io/handycontrol"
+    xmlns:gui="clr-namespace:HaLi.WPF.GUI;assembly=HaLi.WPF"
+    mc:Ignorable="d" 
+    d:DesignHeight="450" d:DesignWidth="800">
+    <hc:SimplePanel HorizontalAlignment="Center" VerticalAlignment="Center">
+        <hc:UniformSpacingPanel Orientation="Vertical">
+            <gui:CheckBox Label="Secret on external" LabelPlace="Right"/>
+            <gui:CheckBox Label="Secret on external" LabelPlace="Left"/>
+        </hc:UniformSpacingPanel>
+    </hc:SimplePanel>
+</UserControl>

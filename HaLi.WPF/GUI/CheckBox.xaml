@@ -1,34 +1,27 @@
-﻿<local:LabeledUI 
+﻿<UserControl 
     x:Name="uc"
     x:Class="HaLi.WPF.GUI.CheckBox"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="clr-namespace:HaLi.WPF.GUI">
-    <local:LabeledUI.Resources>
+    xmlns:local="clr-namespace:HaLi.WPF.GUI"
+    xmlns:hc="https://handyorg.github.io/handycontrol"
+    Loaded="OnLoaded">
+    <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="/HaLi.WPF;component/Themes/WPF.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         </ResourceDictionary>
-    </local:LabeledUI.Resources>
-    <local:LabeledUI.Style>
+    </UserControl.Resources>
+    <!--<UserControl.Style>
         <Style>
             <Style.Triggers>
                 <DataTrigger Binding="{Binding LabelPlace, ElementName=uc}" Value="{x:Static Dock.Left}">
-                    <Setter Property="local:LabeledUI.Margin" Value="6,0" />
-                    <Setter Property="local:LabeledUI.LabelMargin" Value="0,4,6,4" />
                 </DataTrigger>
                 <DataTrigger Binding="{Binding LabelPlace, ElementName=uc}" Value="{x:Static Dock.Right}">
                     <Setter Property="local:LabeledUI.Margin" Value="6,0" />
                     <Setter Property="local:LabeledUI.LabelMargin" Value="6,4,0,4" />
-                </DataTrigger>
-                <DataTrigger Binding="{Binding LabelPlace, ElementName=uc}" Value="{x:Static Dock.Top}">
-                    <Setter Property="local:LabeledUI.Margin" Value="6,4" />
-                    <Setter Property="local:LabeledUI.LabelMargin" Value="4,0,0,2" />
-                </DataTrigger>
-                <DataTrigger Binding="{Binding LabelPlace, ElementName=uc}" Value="{x:Static Dock.Bottom}">
-                    <Setter Property="local:LabeledUI.Margin" Value="6,4" />
-                    <Setter Property="local:LabeledUI.LabelMargin" Value="4,2,0,0" />
                 </DataTrigger>
                 <DataTrigger Binding="{Binding Label, ElementName=uc}" Value="">
                     <Setter Property="local:LabeledUI.Margin" Value="0" />
@@ -38,6 +31,30 @@
                 </DataTrigger>
             </Style.Triggers>
         </Style>
-    </local:LabeledUI.Style>
-    <CheckBox x:Name="uiCheck" IsChecked="{Binding IsChecked, ElementName=uc}" />
-</local:LabeledUI>
+    </UserControl.Style>-->
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <DockPanel x:Name="pLabel" Grid.Column="1" HorizontalAlignment="Left" >
+            <!--<DockPanel.Style>
+                <Style TargetType="{x:Type DockPanel}">
+                    <Style.Triggers>
+                        <DataTrigger Binding="{Binding LabelPlace, ElementName=uc}" Value="{x:Static Dock.Left}">
+                            <Setter Property="Margin" Value="0,0,6,0" />
+                        </DataTrigger>
+                        <DataTrigger Binding="{Binding IsChecked, ElementName=uc}" Value="True">
+                            <Setter Property="Grid.Column" Value="0" />
+                        </DataTrigger>
+                    </Style.Triggers>
+                </Style>
+            </DockPanel.Style>-->
+            <hc:SimpleText x:Name="uiLabelMust" DockPanel.Dock="Left" Text="{Binding MustSymbols, ElementName=uc}" Foreground="{Binding MustBrush, ElementName=uc}" VerticalAlignment="Center" Visibility="{Binding MustFlag, Converter={StaticResource BooleanToVisibilityConverter}, ElementName=uc}"/>
+            <hc:SimpleText x:Name="uiLabel" Text="{Binding Label, ElementName=uc}" Foreground="{Binding LabelBrush, ElementName=uc}" VerticalAlignment="Center"/>
+        </DockPanel>
+        <CheckBox x:Name="uiCheck" IsChecked="{Binding IsChecked, ElementName=uc, Mode=TwoWay}" Grid.Column="0"/>
+    </Grid>
+</UserControl>
