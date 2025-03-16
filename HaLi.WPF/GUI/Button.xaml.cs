@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 
 namespace HaLi.WPF.GUI;
@@ -29,6 +30,16 @@ public partial class Button : UserControl
     public static readonly DependencyProperty IconProperty =
         DependencyProperty.Register("Icon", typeof(Geometry), typeof(Button), new PropertyMetadata(null, OnChanged));
 
+    public string Label
+    {
+        get { return (string)GetValue(LabelProperty); }
+        set { SetValue(LabelProperty, value); }
+    }
+
+    // Using a DependencyProperty as the backing store for Label.  This enables animation, styling, binding, etc...
+    public static readonly DependencyProperty LabelProperty =
+        DependencyProperty.Register("Label", typeof(string), typeof(Button), new PropertyMetadata(""));
+
     private static void OnChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
     {
         if (d is Button uc)
@@ -45,17 +56,7 @@ public partial class Button : UserControl
         }
     }
 
-    public string Label
-    {
-        get { return (string)GetValue(LabelProperty); }
-        set { SetValue(LabelProperty, value); }
-    }
-
-    // Using a DependencyProperty as the backing store for Label.  This enables animation, styling, binding, etc...
-    public static readonly DependencyProperty LabelProperty =
-        DependencyProperty.Register("Label", typeof(string), typeof(Button), new PropertyMetadata(""));
-
-
+    public event EventHandler<MouseButtonEventArgs> Click;
 
 
     public Button()
@@ -71,5 +72,10 @@ public partial class Button : UserControl
         {
             b.Width = double.NaN;
         }
+    }
+
+    private void OnLeftDown(object sender, MouseButtonEventArgs e)
+    {
+        Click?.Invoke(this, e);
     }
 }

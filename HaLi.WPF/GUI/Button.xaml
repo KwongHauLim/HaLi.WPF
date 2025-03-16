@@ -28,7 +28,7 @@
         </ResourceDictionary>
     </UserControl.Resources>
 
-    <Border x:Name="b" Background="{StaticResource RegionBrush}" BorderThickness="1" BorderBrush="{StaticResource BorderBrush}" CornerRadius="{Binding ActualHeight, ConverterParameter=0.5, Converter={StaticResource ScaleConverter}, ElementName=b, Mode=OneWay}">
+    <Border x:Name="b" Background="{StaticResource RegionBrush}" BorderThickness="1" BorderBrush="{StaticResource BorderBrush}" CornerRadius="{Binding ActualHeight, ConverterParameter=0.5, Converter={StaticResource ScaleConverter}, ElementName=b, Mode=OneWay}" MouseLeftButtonDown="OnLeftDown">
         <DockPanel x:Name="a">
             <hc:SimplePanel Height="{Binding ActualHeight, ElementName=a, Mode=OneWay}" Width="{Binding ActualHeight, ElementName=a, Mode=OneWay}" DockPanel.Dock="Left">
                 <Viewbox x:Name="c" Width="{Binding ActualHeight, ConverterParameter=0.7, Converter={StaticResource ScaleConverter}, ElementName=uc, Mode=OneWay}" Height="{Binding Width, ElementName=c}">
