@@ -67,11 +67,11 @@ namespace HaLi.WPF.Tray
         private MenuItem GetParent(MenuItem menuItem)
             => (menuItem.Parent is MenuItem parent) ? parent : null;
 
-        public MenuItem AddSimple(string key, Action action, MenuItem parent = null)
+        public MenuItem AddSimple(string key, object icon, MenuItem parent = null)
         {
             var item = new MenuItem();
             item.Header = key;
-            item.Click += (s, e) => action();
+            item.Icon = icon;
             AddTo(parent, item);
             return item;
         }
